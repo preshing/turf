@@ -33,7 +33,7 @@ Junction was originally developed in C++11, but quickly ran into various limitat
 
 ## Adding Turf to Your Project
 
-For now, refer to Junction's [README](https://github.com/preshing/junction/README.md) file for additional instructions.
+For now, refer to Junction's [README](https://github.com/preshing/junction) file for instructions.
 
 ## Feedback
 
