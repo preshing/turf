@@ -1,0 +1,85 @@
+#include <turf/Core.h>
+#include <turf/extra/TimeWaster.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/extra/Random.h>
+#include <turf/Atomic.h>
+#include <turf/Assert.h>
+#include <string.h>
+
+using namespace turf::intTypes;
+
+// clang-format off
+
+#define ELEMENT(index) ((index) >> ${TEST_INT_BITSHIFT})
+#define BIT(index) ((u${TEST_INT_BITSIZE}) 1 << ((index) & (${TEST_INT_BITSIZE} - 1)))
+
+static turf::Atomic<ureg> g_success;
+static const ureg kDataBitSize = ${TEST_DATA_SIZE};
+static turf::Atomic<u${TEST_INT_BITSIZE}>* g_data;
+static ureg* g_indices;
+static ureg g_numThreads;
+
+static void threadFunc(ureg threadNum) {
+    // Decide upon index range and number of times to iterate
+    ureg lo = kDataBitSize * threadNum / g_numThreads;
+    ureg hi = kDataBitSize * (threadNum + 1) / g_numThreads;
+    ureg times = 10000000 / kDataBitSize;
+
+    turf::extra::TimeWaster tw;
+    for (ureg i = 0; i < times; i++) {
+        for (ureg j = lo; j < hi; j++) {
+            ureg index = g_indices[j];
+            g_data[ELEMENT(index)].fetchOr(BIT(index), turf::Relaxed);
+            tw.wasteRandomCycles();
+        }
+        for (ureg j = lo; j < hi; j++) {
+            ureg index = g_indices[j];
+            if ((g_data[ELEMENT(index)].load(turf::Relaxed) & BIT(index)) == 0)
+                g_success.store(0, turf::Relaxed);
+        }
+        for (ureg j = lo; j < hi; j++) {
+            ureg index = g_indices[j];
+            g_data[ELEMENT(index)].fetchAnd(~BIT(index), turf::Relaxed);
+            tw.wasteRandomCycles();
+        }
+        for (ureg j = lo; j < hi; j++) {
+            ureg index = g_indices[j];
+            if ((g_data[ELEMENT(index)].load(turf::Relaxed) & BIT(index)) != 0)
+                g_success.store(0, turf::Relaxed);
+        }
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    g_success.storeNonatomic(1);
+    g_numThreads = numThreads;
+
+    // Create bit array and clear it
+    TURF_ASSERT((kDataBitSize & 63) == 0);
+    g_data = new turf::Atomic<u${TEST_INT_BITSIZE}>[kDataBitSize / ${TEST_INT_BITSIZE}];
+    memset(g_data, 0, kDataBitSize / 8);
+
+    // Create index array
+    g_indices = new ureg[kDataBitSize];
+    for (ureg i = 0; i < kDataBitSize; i++)
+        g_indices[i] = i;
+
+    // Shuffle the index array
+    turf::extra::Random random;
+    for (ureg i = 0; i < kDataBitSize; i++) {
+        ureg swap = random.next32() % (kDataBitSize - i);
+        ureg temp = g_indices[i];
+        g_indices[i] = g_indices[swap];
+        g_indices[swap] = temp;
+    }
+
+    // Launch threads
+    turf::extra::JobDispatcher jobDispatcher(numThreads);
+    jobDispatcher.kick(threadFunc);
+
+    // Clean up
+    delete[] g_data;
+    delete[] g_indices;
+
+    return g_success.loadNonatomic() != 0;
+}

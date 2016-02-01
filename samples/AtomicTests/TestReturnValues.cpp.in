@@ -1,0 +1,45 @@
+#include <turf/Core.h>
+#include <turf/extra/Random.h>
+#include <turf/Atomic.h>
+#include <turf/Affinity.h>
+
+using namespace turf::intTypes;
+
+// clang-format off 
+
+static turf::Atomic<u${TEST_INT_BITSIZE}> g_object;
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    turf::extra::Random random;
+    u${TEST_INT_BITSIZE} mirror = 0, operand, expected;
+
+    for (ureg i = 0; i < 1000; i++) {
+        // compare_exchange
+        expected = (random.next32() & 1) != 0 ? mirror : random.next${TEST_INT_BITSIZE}();
+        operand = random.next${TEST_INT_BITSIZE}();
+        if (g_object.compareExchange(expected, operand, turf::Relaxed) != mirror)
+            return false;
+        if (expected == mirror)
+            mirror = operand;
+
+        // fetch_add
+        operand = random.next${TEST_INT_BITSIZE}();
+        if (g_object.fetchAdd(operand, turf::Relaxed) != mirror)
+            return false;
+        mirror += operand;
+
+        // fetch_and
+        operand = random.next${TEST_INT_BITSIZE}();
+        if (g_object.fetchAnd(operand, turf::Relaxed) != mirror)
+            return false;
+        mirror &= operand;
+
+        // fetch_or
+        operand = random.next${TEST_INT_BITSIZE}();
+        if (g_object.fetchOr(operand, turf::Relaxed) != mirror)
+            return false;
+        mirror |= operand;
+    }
+
+    return true;
+}

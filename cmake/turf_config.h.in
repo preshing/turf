@@ -1,0 +1,14 @@
+#cmakedefine01 TURF_HAS_STDINT
+#cmakedefine01 TURF_PREFER_CPP11
+#cmakedefine01 TURF_WITH_BOOST
+#cmakedefine01 TURF_PREFER_BOOST
+#cmakedefine01 TURF_WITH_EXCEPTIONS
+#cmakedefine01 TURF_HAS_NOEXCEPT
+#cmakedefine01 TURF_HAS_CONSTEXPR
+#cmakedefine01 TURF_HAS_LONG_LONG
+#cmakedefine01 TURF_REPLACE_OPERATOR_NEW
+#cmakedefine01 TURF_USE_DLMALLOC
+#cmakedefine01 TURF_DLMALLOC_DEBUG_CHECKS
+#cmakedefine01 TURF_DLMALLOC_FAST_STATS
+
+#include "turf_userconfig.h"

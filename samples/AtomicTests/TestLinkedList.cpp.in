@@ -1,0 +1,40 @@
+#include <turf/Core.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/Atomic.h>
+
+using namespace turf::intTypes;
+
+// clang-format off 
+
+struct Node {
+    Node* next;
+};
+
+static turf::Atomic<Node*> g_head;
+
+static void threadFunc(ureg threadNum) {
+    for (ureg i = 0; i < 2000000; i++) {
+        Node* insert = new Node;
+        Node* h;
+        do {
+            h = g_head.load(turf::Relaxed);
+            insert->next = h;
+        } while (g_head.compareExchange(h, insert, turf::Relaxed) != h);
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    g_head.storeNonatomic(NULL);
+    turf::extra::JobDispatcher jobDispatcher(numThreads);
+    jobDispatcher.kick(threadFunc);
+    ureg count = 0;
+    while (Node* t = g_head.loadNonatomic()) {
+        g_head.storeNonatomic(t->next);
+        // If this loop runs too slowly in Windows,
+        // make sure to set the environment variable _NO_DEBUG_HEAP to 1,
+        // or run without the debugger attached.
+        delete t;
+        count++;
+    }
+    return count == 2000000 * numThreads;
+}

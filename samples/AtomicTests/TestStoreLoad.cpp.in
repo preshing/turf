@@ -1,0 +1,54 @@
+// This test is based on the blog post: http://preshing.com/20120515/memory-reordering-caught-in-the-act
+
+#include <turf/Core.h>
+#include <turf/extra/Random.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/Atomic.h>
+#include <turf/Assert.h>
+
+using namespace turf::intTypes;
+
+// clang-format off 
+
+#cmakedefine01 TEST_FORCE_FAIL
+
+static turf::extra::Random g_random[2];
+static turf::Atomic<u32> X, Y;
+static u32 r1, r2;
+
+static void threadFunc(ureg threadNum) {
+    if (threadNum == 0)     {
+        while (g_random[0].next32() % 8 != 0) {  // Random delay
+        }
+        X.store(1, turf::Relaxed);
+#if TEST_FORCE_FAIL
+        turf::signalFenceSeqCst();  // Prevent compiler reordering only
+#else
+        turf::threadFenceSeqCst();  // Prevent CPU reordering
+#endif
+        r1 = Y.load(turf::Relaxed);
+    } else {
+        while (g_random[1].next32() % 8 != 0) {  // Random delay
+        }
+        Y.store(1, turf::Relaxed);
+#if TEST_FORCE_FAIL
+        turf::signalFenceSeqCst();  // Prevent compiler reordering only
+#else
+        turf::threadFenceSeqCst();  // Prevent CPU reordering
+#endif
+        r2 = X.load(turf::Relaxed);
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    TURF_ASSERT(numThreads == 2);
+    turf::extra::JobDispatcher jobDispatcher(2);
+    for (ureg i = 0; i < 100000; i++) {
+        X.storeNonatomic(0);
+        Y.storeNonatomic(0);
+        jobDispatcher.kick(threadFunc);
+        if (r1 == 0 && r2 == 0)
+            return false;
+    }
+    return true;
+}

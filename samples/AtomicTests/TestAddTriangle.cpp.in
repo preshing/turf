@@ -1,0 +1,27 @@
+#include <turf/Core.h>
+#include <turf/extra/TimeWaster.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/Atomic.h>
+#include <turf/Affinity.h>
+
+using namespace turf::intTypes;
+
+// clang-format off
+
+static turf::Atomic<u${TEST_INT_BITSIZE}> g_sharedInt;
+
+static void threadFunc(ureg threadNum) {
+    turf::extra::TimeWaster tw;
+
+    for (ureg i = 0; i < 1000000; i++) {
+        g_sharedInt.fetchAdd(i, turf::Relaxed);
+        tw.wasteRandomCycles();
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    g_sharedInt.storeNonatomic(0);
+    turf::extra::JobDispatcher jobDispatcher(numThreads);
+    jobDispatcher.kick(threadFunc);
+    return g_sharedInt.loadNonatomic() == (u${TEST_INT_BITSIZE}) ((u${TEST_INT_BITSIZE}) 499999500000 * numThreads);
+}

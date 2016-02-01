@@ -1,0 +1,118 @@
+// The "test_load_store_64_fail" version of this test is designed to fail on 32-bit CPUs,
+// demonstrating that inconsistent values can be seen if loads/stores are not atomic.
+
+#include <turf/Core.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/Atomic.h>
+#include <turf/Assert.h>
+
+using namespace turf::intTypes;
+
+// clang-format off 
+
+#cmakedefine01 TEST_FORCE_FAIL
+
+static turf::Atomic<u${TEST_INT_BITSIZE}> g_sharedInt;
+static bool g_success;
+
+#if ${TEST_INT_BITSIZE} == 8
+
+    // These values all satisfy x * x >= g_limit:
+    static u8 g_values[] = {
+        0x27u,
+        0x35u,
+        0x4bu,
+        0xb5u,
+        0xd9u,
+        0xa7u,
+        0x59u,
+        0xcbu,
+    };
+    static u8 g_limit = 0xf0u;
+
+#elif ${TEST_INT_BITSIZE} == 16
+
+    // These values all satisfy x * x >= g_limit:
+    static u16 g_values[] = {
+        0xd771u,
+        0x78cau,
+        0xbbb3u,
+        0x7c65u,
+        0x364eu,
+        0x6513u,
+        0x6ee2u,
+        0x7bc2u,
+    };
+    static u16 g_limit = 0xff00u;
+
+#elif ${TEST_INT_BITSIZE} == 32
+
+    // These values all satisfy x * x >= g_limit:
+    static u32 g_values[] = {
+        0x37b91364u,
+        0x1c5970efu,
+        0x536c76bau,
+        0x0a10207fu,
+        0x71043c77u,
+        0x4db84a83u,
+        0x27cf0273u,
+        0x74a15a69u,
+    };
+    static u32 g_limit = 0xffffff00u;
+
+#elif ${TEST_INT_BITSIZE} == 64
+
+    // These values all satisfy x * x >= g_limit:
+    static u64 g_values[] = {
+        0x3c116d2362a21633ull,
+        0x7747508552ab6bc6ull,
+        0x289a0e1528a43422ull,
+        0x15e36d0a61d326eaull,
+        0x3ccb2e8c0c6224c4ull,
+        0x074504c13a1716e1ull,
+        0x6c82417a3ad77b24ull,
+        0x3124440040454919ull,
+    };
+    static u64 g_limit = 0xffffff0000000000ull;
+
+#endif
+
+static void threadFunc(ureg threadNum) {
+    u${TEST_INT_BITSIZE} value;
+
+    if (threadNum == 0) {
+        u32 index = 0;
+        for (ureg i = 0; i < 10000000; i++) {
+            index = (index * index + 1) % 65521;            // Next pseudorandom index
+            value = g_values[index & 7];                    // Value to store
+#if TEST_FORCE_FAIL
+            g_sharedInt.storeNonatomic(value);              // Nonatomic store
+#else
+            g_sharedInt.store(value, turf::Relaxed);        // Atomic store
+#endif
+            // Issue a compiler barrier to prevent hoisting the store out of the loop
+            turf::signalFenceRelease();
+        }
+    } else {
+        for (ureg i = 0; i < 10000000; i++) {
+            // Issue a compiler barrier to prevent hoisting the load out of the loop
+            turf::signalFenceAcquire();
+#if TEST_FORCE_FAIL
+            value = g_sharedInt.loadNonatomic();            // Nonatomic load
+#else
+            value = g_sharedInt.load(turf::Relaxed);        // Atomic load
+#endif
+            if ((u${TEST_INT_BITSIZE}) (value * value) < g_limit)
+                g_success = false;                          // Invalid value loaded!
+        }
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    TURF_ASSERT(numThreads == 2);
+    g_sharedInt.storeNonatomic(g_values[0]);    // Initial value must be valid
+    g_success = true;
+    turf::extra::JobDispatcher jobDispatcher(2);
+    jobDispatcher.kick(threadFunc);
+    return g_success;
+}

@@ -1,0 +1,49 @@
+#include <turf/Core.h>
+#include <turf/extra/JobDispatcher.h>
+#include <turf/Atomic.h>
+#include <algorithm>
+#include <vector>
+#include <memory.h>
+
+using namespace turf::intTypes;
+
+// clang-format off
+
+#cmakedefine01 TEST_FORCE_FAIL
+
+static turf::Atomic<u${TEST_INT_BITSIZE}> g_sharedInt;
+static u${TEST_INT_BITSIZE}* g_valuesSeen = NULL;
+static const ureg kValuesPerThread = 100000;
+
+static void threadFunc(ureg threadNum) {
+    ureg base = kValuesPerThread * threadNum;
+    for (ureg i = base + 1; i <= base + kValuesPerThread; i++) {
+#if TEST_FORCE_FAIL
+        turf::signalFenceSeqCst();    // Make the compiler keep the next two lines on every iteration of the loop
+        u${TEST_INT_BITSIZE} oldValue = g_sharedInt.load(turf::Relaxed);
+        g_sharedInt.store(i, turf::Relaxed);
+#else
+        u${TEST_INT_BITSIZE} oldValue = g_sharedInt.exchange(i, turf::Relaxed);
+#endif
+        g_valuesSeen[i] = oldValue;
+    }
+}
+
+bool ${TEST_FUNC}(ureg numThreads) {
+    g_sharedInt.storeNonatomic(0);
+    ureg numValues = kValuesPerThread * numThreads + 1;
+    g_valuesSeen = new u${TEST_INT_BITSIZE}[numValues];
+    turf::extra::JobDispatcher jobDispatcher(numThreads);
+    jobDispatcher.kick(threadFunc);
+    g_valuesSeen[0] = g_sharedInt.loadNonatomic();
+    std::sort(g_valuesSeen, g_valuesSeen + numValues);
+    std::vector<u${TEST_INT_BITSIZE}> expected(numValues);
+    for (ureg i = 0; i < numValues; i++) {
+        expected[i] = (u${TEST_INT_BITSIZE}) i;
+    }
+    std::sort(expected.begin(), expected.end());
+    bool success = (memcmp(g_valuesSeen, &expected[0], sizeof(u${TEST_INT_BITSIZE}) * numValues) == 0);
+    delete[] g_valuesSeen;
+    g_valuesSeen = NULL;
+    return success;
+}

@@ -1,0 +1,67 @@
+#include <turf/Core.h>
+#include <turf/extra/TimeWaster.h>
+#include <turf/CPUTimer.h>
+#include <turf/Affinity.h>
+#include <stdio.h>
+
+using namespace turf::intTypes;
+
+typedef bool TestEntryFunc(ureg numThreads);
+
+struct TestInfo {
+    const char* description;
+    TestEntryFunc* func;
+    ureg numThreads;
+    bool allowFailure;
+};
+
+// clang-format off
+${TEST_ENTRY_FUNCS}
+
+TestInfo g_testInfos[] = {
+${TEST_INFOS}
+};
+// clang-format on
+
+struct TestGroup {
+    ureg numTests;
+    ureg numPassed;
+
+    TestGroup() {
+        numTests = 0;
+        numPassed = 0;
+    }
+    void addResult(bool success) {
+        if (success)
+            numPassed++;
+        numTests++;
+    }
+};
+
+int main() {
+    turf::CPUTimer::Converter converter;
+    turf::extra::TimeWaster::initialize();
+
+    TestGroup required, optional;
+    ureg numTests = sizeof(g_testInfos) / sizeof(g_testInfos[0]);
+    for (ureg i = 0; i < numTests; i++) {
+        TestInfo& info = g_testInfos[i];
+        printf("[%d/%d] Test \"%s\"...", int(i + 1), int(numTests), info.description);
+
+        turf::CPUTimer::Point start = turf::CPUTimer::get();
+        bool success = info.func(info.numThreads);
+        turf::CPUTimer::Point end = turf::CPUTimer::get();
+
+        const char* status = success ? "pass" : info.allowFailure ? "fail (allowed)" : "*** FAIL ***";
+        printf(" %s, %.3f ms\n", status, converter.toSeconds(end - start) * 1000.f);
+
+        TestGroup& group = info.allowFailure ? optional : required;
+        group.addResult(success);
+    }
+
+    printf("\n----- Summary: -----\n");
+    printf("Out of the tests required to pass, %d/%d passed.\n", (int) required.numPassed, (int) required.numTests);
+    printf("Out of the tests allowed to fail, %d/%d passed.\n", (int) optional.numPassed, (int) optional.numTests);
+
+    return (required.numPassed == required.numTests) ? 0 : 1;
+}
