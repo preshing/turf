@@ -37,4 +37,4 @@ For now, refer to Junction's [README](https://github.com/preshing/junction/READM
 
 ## Feedback
 
-If you have any comments or feedback, feel free to [open an issue](https://github.com/preshing/junction/issues) on GitHub, or send me direct message using the [contact form](http://preshing.com/contact/) on my blog.
+If you have any comments or feedback, feel free to [open an issue](https://github.com/preshing/junction/issues) on GitHub, or send a direct message using the [contact form](http://preshing.com/contact/) on my blog.
