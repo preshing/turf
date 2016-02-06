@@ -8,6 +8,8 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     project(Turf)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
     ApplyTurfBuildSettings()
+    set(TURF_WITH_SAMPLES TRUE CACHE BOOL "Include all Turf samples in generated build system")
+    set(TURF_MAKE_INSTALLABLE TRUE)
 endif()	
 
 # Default values.
@@ -60,7 +62,7 @@ if(TURF_WITH_BOOST)
 endif()
 
 # If this is the root listfile, add all samples
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+if((CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR) AND TURF_WITH_SAMPLES)
     file(GLOB children samples/*)
     foreach(child ${children})
         if(EXISTS "${child}/CMakeLists.txt")
@@ -87,6 +89,15 @@ add_library(turf ${TURF_FILES})
 
 # Set include dirs for this library (done last).
 include_directories(${TURF_ALL_INCLUDE_DIRS})
+
+# Make installable.
+if(TURF_MAKE_INSTALLABLE)
+    install(TARGETS turf DESTINATION lib)
+    install(DIRECTORY turf/ DESTINATION include/turf FILES_MATCHING PATTERN "*.h" PATTERN "*.inc")
+    file(GLOB configHeaders "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
+    install(FILES ${configHeaders} DESTINATION include)
+    install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*.cmake")
+endif()
 
 # Export include dirs/libraries to parent project if we were invoked using add_subdirectory().
 if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
