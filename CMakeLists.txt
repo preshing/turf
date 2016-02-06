@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.5)
+include(cmake/Macros.cmake)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     # If this is the root project, issue a project() command so that
@@ -6,10 +7,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithAsserts;RelWithDebInfo" CACHE INTERNAL "Build configs")
     project(Turf)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-    include(cmake/TurfProjectDefs.cmake)
     ApplyTurfBuildSettings()
-elseif(NOT TURF_FOUND)
-    message(FATAL_ERROR "You must include cmake/TurfProjectDefs.cmake before adding this subdirectory")
 endif()	
 
 # Default values.

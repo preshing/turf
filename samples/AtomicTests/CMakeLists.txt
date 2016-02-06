@@ -7,7 +7,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     project(${SAMPLE_NAME})
 endif()    
 
-include(../../cmake/AddSample.cmake)
+include(../AddSample.cmake)
 
 #------------------------------------------
 # Configure all the tests
