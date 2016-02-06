@@ -1,4 +1,4 @@
-Turf is a platform abstraction library. It defines a common C++ API for:
+Turf is a configurable C++ platform adapter. It defines a common API for:
 
 * Thread creation
 * Thread affinities

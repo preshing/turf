@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------
-  Turf: C++ platform abstraction library
+  Turf: Configurable C++ platform adapter
   Copyright (c) 2016 Jeff Preshing
 
   Distributed under the Simplified BSD License.
