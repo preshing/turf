@@ -23,7 +23,8 @@
 #include <turf/Assert.h>
 #include <stdlib.h>
 #include <memory.h>
-// FIXME: Define a configurable strategy for failed platform calls in Turf, and make MALLOC_FAILURE_ACTION follow it.
+// FIXME: Define a configurable strategy for failed platform calls in Turf, and
+// make MALLOC_FAILURE_ACTION follow it.
 #include <errno.h>
 
 // clang-format off

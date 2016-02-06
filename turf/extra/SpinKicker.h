@@ -20,7 +20,6 @@
 namespace turf {
 namespace extra {
 
-
 class SpinKicker {
 private:
     turf::Atomic<ureg> m_kickVar;
@@ -30,7 +29,8 @@ public:
     }
 
     void waitForKick() {
-        // Increment shared counter to indicate this thread is ready and busy-waiting.
+        // Increment shared counter to indicate this thread is ready and
+        // busy-waiting.
         m_kickVar.fetchAdd(1, turf::Release);
         // Busy-wait on kick variable until there's a kick from main thread.
         while (m_kickVar.load(turf::Acquire) > 0) {

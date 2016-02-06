@@ -26,8 +26,10 @@ void _ReadWriteBarrier();
 //  Atomic types
 //-------------------------------------
 // In MSVC, correct alignment of each type is already ensured.
-// MSVC doesn't seem subject to out-of-thin-air stores like GCC, so volatile is omitted.
-// (MS volatile implies acquire & release semantics, which may be expensive on ARM or Xbox 360.)
+// MSVC doesn't seem subject to out-of-thin-air stores like GCC, so volatile is
+// omitted.
+// (MS volatile implies acquire & release semantics, which may be expensive on
+// ARM or Xbox 360.)
 typedef struct { uint8_t nonatomic; } turf_atomic8_t;
 typedef struct { uint16_t nonatomic; } turf_atomic16_t;
 typedef struct { uint32_t nonatomic; } turf_atomic32_t;
@@ -43,7 +45,8 @@ typedef struct { void* nonatomic; } turf_atomicPtr_t;
 #define turf_signalFenceSeqCst() _ReadWriteBarrier()
 
 #if TURF_TARGET_XBOX_360 // Xbox 360
-// According to http://msdn.microsoft.com/en-us/library/windows/desktop/ee418650.aspx,
+// According to
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ee418650.aspx,
 // __lwsync() also acts a compiler barrier, unlike MemoryBarrier() on X360.
 // Hoping __sync() acts as a compiler barrier too.
 #define turf_threadFenceConsume() (0)
@@ -61,7 +64,8 @@ typedef struct { void* nonatomic; } turf_atomicPtr_t;
 //  8-bit atomic operations
 //----------------------------------------------
 TURF_C_INLINE uint8_t turf_load8Relaxed(const turf_atomic8_t* object) {
-    // Do a volatile load so that compiler doesn't duplicate loads, which makes them nonatomic. (Happened in testing.)
+    // Do a volatile load so that compiler doesn't duplicate loads, which makes
+    // them nonatomic. (Happened in testing.)
     return ((volatile turf_atomic8_t*) object)->nonatomic;
 }
 
@@ -102,7 +106,8 @@ TURF_C_INLINE uint8_t turf_fetchOr8Relaxed(turf_atomic8_t* object, uint8_t opera
 //  16-bit atomic operations
 //----------------------------------------------
 TURF_C_INLINE uint16_t turf_load16Relaxed(const turf_atomic16_t* object) {
-    // Do a volatile load so that compiler doesn't duplicate loads, which makes them nonatomic. (Happened in testing.)
+    // Do a volatile load so that compiler doesn't duplicate loads, which makes
+    // them nonatomic. (Happened in testing.)
     return ((volatile turf_atomic16_t*) object)->nonatomic;
 }
 
@@ -143,7 +148,8 @@ TURF_C_INLINE uint16_t turf_fetchOr16Relaxed(turf_atomic16_t* object, uint16_t o
 //  32-bit atomic operations
 //----------------------------------------------
 TURF_C_INLINE uint32_t turf_load32Relaxed(const turf_atomic32_t* object) {
-    // Do a volatile load so that compiler doesn't duplicate loads, which makes them nonatomic. (Happened in testing.)
+    // Do a volatile load so that compiler doesn't duplicate loads, which makes
+    // them nonatomic. (Happened in testing.)
     return ((volatile turf_atomic32_t*) object)->nonatomic;
 }
 
@@ -185,11 +191,14 @@ TURF_C_INLINE uint32_t turf_fetchOr32Relaxed(turf_atomic32_t* object, uint32_t o
 //----------------------------------------------
 TURF_C_INLINE uint64_t turf_load64Relaxed(const turf_atomic64_t* object) {
 #if (TURF_PTR_SIZE == 8) || TURF_TARGET_XBOX_360
-    // Do a volatile load so that compiler doesn't duplicate loads, which makes them nonatomic. (Happened in testing.)
+    // Do a volatile load so that compiler doesn't duplicate loads, which makes
+    // them nonatomic. (Happened in testing.)
     return ((volatile turf_atomic64_t*) object)->nonatomic;
 #else
-    // On 32-bit x86, the most compatible way to get an atomic 64-bit load is with cmpxchg8b.
-    // This essentially performs turf_compareExchange64Relaxed(object, _dummyValue, _dummyValue).
+    // On 32-bit x86, the most compatible way to get an atomic 64-bit load is with
+    // cmpxchg8b.
+    // This essentially performs turf_compareExchange64Relaxed(object,
+    // _dummyValue, _dummyValue).
     uint64_t result;
     __asm {
         mov esi, object;
@@ -207,11 +216,15 @@ TURF_C_INLINE void turf_store64Relaxed(turf_atomic64_t* object, uint64_t value) 
 #if (TURF_PTR_SIZE == 8) || TURF_TARGET_XBOX_360
     ((volatile turf_atomic64_t*) object)->nonatomic = value;
 #else
-    // On 32-bit x86, the most compatible way to get an atomic 64-bit store is with cmpxchg8b.
-    // Essentially, we perform turf_compareExchange64Relaxed(object, object->nonatomic, desired)
+    // On 32-bit x86, the most compatible way to get an atomic 64-bit store is
+    // with cmpxchg8b.
+    // Essentially, we perform turf_compareExchange64Relaxed(object,
+    // object->nonatomic, desired)
     // in a loop until it returns the previous value.
-    // According to the Linux kernel (atomic64_cx8_32.S), we don't need the "lock;" prefix
-    // on cmpxchg8b since aligned 64-bit writes are already atomic on 586 and newer.
+    // According to the Linux kernel (atomic64_cx8_32.S), we don't need the
+    // "lock;" prefix
+    // on cmpxchg8b since aligned 64-bit writes are already atomic on 586 and
+    // newer.
     __asm {
         mov esi, object;
         mov ebx, dword ptr value;
@@ -241,8 +254,10 @@ TURF_C_INLINE uint64_t turf_exchange64Relaxed(turf_atomic64_t* object, uint64_t 
 #if (TURF_PTR_SIZE == 8) || TURF_TARGET_XBOX_360
     return _InterlockedExchange64((LONGLONG*) object, desired);
 #else
-    // It would be cool to check the zero flag, which is set by lock cmpxchg8b, to know whether the CAS succeeded,
-    // but that would require an __asm block, which forces us to move the result to a stack variable.
+    // It would be cool to check the zero flag, which is set by lock cmpxchg8b, to
+    // know whether the CAS succeeded,
+    // but that would require an __asm block, which forces us to move the result
+    // to a stack variable.
     // Let's just re-compare the result with the previous instead.
     uint64_t expected = object->nonatomic;
     for (;;) {

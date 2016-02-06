@@ -42,7 +42,7 @@ public:
     void lockShared() {
         pthread_rwlock_rdlock(&m_rwLock);
     }
-    
+
     void unlockShared() {
         pthread_rwlock_unlock(&m_rwLock);
     }

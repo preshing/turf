@@ -9,8 +9,6 @@
 
 using namespace turf::intTypes;
 
-// clang-format off 
-
 #cmakedefine01 TEST_FORCE_FAIL
 
 static turf::extra::TimeWaster g_timeWasters[4];
@@ -18,13 +16,12 @@ static turf::Atomic<u${TEST_INT_BITSIZE}> g_flag;
 static u32 g_sharedValue;
 
 static void threadFunc(ureg threadNum) {
-    turf::extra::TimeWaster &tw = g_timeWasters[threadNum];
+    turf::extra::TimeWaster& tw = g_timeWasters[threadNum];
 
     ureg count = 0;
     while (count < 5000000) {
         tw.wasteRandomCycles();
-        if (g_flag.compareExchange(0, 1, turf::Relaxed) == 0) {
-            // Lock was successful
+        if (g_flag.compareExchange(0, 1, turf::Relaxed) == 0) { // Lock succeeded
 #if !TEST_FORCE_FAIL
             turf::threadFenceAcquire();
 #endif

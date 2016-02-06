@@ -8,8 +8,6 @@
 
 using namespace turf::intTypes;
 
-// clang-format off 
-
 #cmakedefine01 TEST_FORCE_FAIL
 
 static turf::extra::Random g_random[2];
@@ -17,24 +15,24 @@ static turf::Atomic<u32> X, Y;
 static u32 r1, r2;
 
 static void threadFunc(ureg threadNum) {
-    if (threadNum == 0)     {
-        while (g_random[0].next32() % 8 != 0) {  // Random delay
+    if (threadNum == 0) {
+        while (g_random[0].next32() % 8 != 0) { // Random delay
         }
         X.store(1, turf::Relaxed);
 #if TEST_FORCE_FAIL
-        turf::signalFenceSeqCst();  // Prevent compiler reordering only
+        turf::signalFenceSeqCst(); // Prevent compiler reordering only
 #else
-        turf::threadFenceSeqCst();  // Prevent CPU reordering
+        turf::threadFenceSeqCst(); // Prevent CPU reordering
 #endif
         r1 = Y.load(turf::Relaxed);
     } else {
-        while (g_random[1].next32() % 8 != 0) {  // Random delay
+        while (g_random[1].next32() % 8 != 0) { // Random delay
         }
         Y.store(1, turf::Relaxed);
 #if TEST_FORCE_FAIL
-        turf::signalFenceSeqCst();  // Prevent compiler reordering only
+        turf::signalFenceSeqCst(); // Prevent compiler reordering only
 #else
-        turf::threadFenceSeqCst();  // Prevent CPU reordering
+        turf::threadFenceSeqCst(); // Prevent CPU reordering
 #endif
         r2 = X.load(turf::Relaxed);
     }

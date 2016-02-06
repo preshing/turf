@@ -34,12 +34,12 @@ Random::Random() {
         next64();
 }
 
-u64 Random::next64() { 
-	u64 s1 = s[ 0 ];
-	const u64 s0 = s[ 1 ];
-	s[ 0 ] = s0;
-	s1 ^= s1 << 23; // a
-	return ( s[ 1 ] = ( s1 ^ s0 ^ ( s1 >> 17 ) ^ ( s0 >> 26 ) ) ) + s0; // b, c
+u64 Random::next64() {
+    u64 s1 = s[0];
+    const u64 s0 = s[1];
+    s[0] = s0;
+    s1 ^= s1 << 23;                                           // a
+    return (s[1] = (s1 ^ s0 ^ (s1 >> 17) ^ (s0 >> 26))) + s0; // b, c
 }
 
 } // namespace extra

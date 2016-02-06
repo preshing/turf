@@ -38,7 +38,7 @@ public:
     bool tryLock() {
         return !!TryEnterCriticalSection(&m_mutex);
     }
-    
+
     void unlock() {
         LeaveCriticalSection(&m_mutex);
     }

@@ -15,6 +15,8 @@
 
 #include "core.h"
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_C_IMPL_ATOMIC_PATH)
     #if TURF_COMPILER_MSVC
@@ -33,8 +35,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-// clang-format off
 
 typedef enum {
     TURF_MEMORY_ORDER_RELAXED,

@@ -16,20 +16,20 @@
 #include <turf/Core.h>
 
 namespace turf {
-    
+
 #if TURF_WITH_ASSERTS
 
 struct RaceDetector {
     turf::Atomic<bool> entered;
-    
+
     RaceDetector() : entered(false) {
     }
 };
-    
+
 class RaceDetectGuard {
 private:
     RaceDetector& m_guard;
-    
+
 public:
     RaceDetectGuard(RaceDetector& guard) : m_guard(guard) {
         if (m_guard.entered.exchange(true, turf::Acquire) == true)
@@ -45,8 +45,10 @@ public:
 
 #else
 
+// clang-format off
 #define TURF_DEFINE_RACE_DETECTOR(name)
 #define TURF_RACE_DETECT_GUARD(name) do {} while (0)
+// clang-format on
 
 #endif
 

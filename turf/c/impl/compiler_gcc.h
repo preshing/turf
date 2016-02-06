@@ -36,8 +36,8 @@
 //  CPU intrinsics
 //-------------------------------------
 TURF_C_INLINE void turf_yieldHWThread() {
-    // Only implemented on x86/64
 #if MINT_CPU_X86 || MINT_CPU_X64
+    // Only implemented on x86/64
     asm volatile("pause");
 #endif
 }

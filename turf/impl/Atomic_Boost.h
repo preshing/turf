@@ -37,7 +37,8 @@ enum MemoryOrder {
     AcqRel = boost::memory_order_acq_rel,
 };
 
-template <typename T> class Atomic_Boost : protected boost::atomic<T> {
+template <typename T>
+class Atomic_Boost : protected boost::atomic<T> {
 private:
     // Hide operator=
     T operator=(T value);
@@ -67,7 +68,8 @@ public:
         return boost::atomic<T>::compare_exchange_strong(expected, desired, (boost::memory_order) memoryOrder);
     }
     bool compareExchangeWeak(T& expected, T desired, MemoryOrder success, MemoryOrder failure) {
-        return boost::atomic<T>::compare_exchange_weak(expected, desired, (boost::memory_order) success, (boost::memory_order) failure);
+        return boost::atomic<T>::compare_exchange_weak(expected, desired, (boost::memory_order) success,
+                                                       (boost::memory_order) failure);
     }
     T exchange(T desired, MemoryOrder memoryOrder) {
         return boost::atomic<T>::exchange(desired, (boost::memory_order) memoryOrder);

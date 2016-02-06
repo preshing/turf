@@ -40,11 +40,11 @@ uint64_t getCurrentUTCTime() {
 #if TURF_USE_POSIX_2008_CLOCK
     struct timespec tick;
     clock_gettime(CLOCK_REALTIME, &tick);
-    return (uint64_t)tick.tv_sec * 1000000ull + tick.tv_nsec / 1000 + 11644473600000000ull;
+    return (uint64_t) tick.tv_sec * 1000000ull + tick.tv_nsec / 1000 + 11644473600000000ull;
 #else
     struct timeval tick;
     gettimeofday(&tick, NULL);
-    return (uint64_t)tick.tv_sec * 1000000ull + tick.tv_usec + 11644473600000000ull;
+    return (uint64_t) tick.tv_sec * 1000000ull + tick.tv_usec + 11644473600000000ull;
 #endif
 }
 } // namespace turf

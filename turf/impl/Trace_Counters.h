@@ -46,7 +46,8 @@ private:
     TraceGroup* m_next;
 
 public:
-    TraceGroup(const char* name, Counter* counters, ureg numCounters) : m_name(name), m_counters(counters), m_numCounters(numCounters), m_next(NULL) {
+    TraceGroup(const char* name, Counter* counters, ureg numCounters)
+        : m_name(name), m_counters(counters), m_numCounters(numCounters), m_next(NULL) {
         Trace_Counters::Instance.addGroup(this);
     }
     void dump();

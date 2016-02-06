@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_ATOMIC_PATH)
     #if TURF_PREFER_CPP11 || TURF_CPU_ARM  // FIXME: Fix atomic_gcc_arm.c, support AArch64, then remove TURF_CPU_ARM check here

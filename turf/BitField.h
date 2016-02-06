@@ -21,7 +21,8 @@ namespace turf {
 //---------------------------------------------------------
 // BitFieldMember<>: Used internally by TURF_ADD_BITFIELD_MEMBER macro.
 //---------------------------------------------------------
-template <typename T, int Offset, int Bits> struct BitFieldMember {
+template <typename T, int Offset, int Bits>
+struct BitFieldMember {
     T value;
 
     TURF_STATIC_ASSERT(Offset + Bits <= (int) sizeof(T) * 8);
@@ -44,7 +45,7 @@ template <typename T, int Offset, int Bits> struct BitFieldMember {
         return *this;
     }
     BitFieldMember& operator=(const BitFieldMember& v) {
-        return *this = T(v);
+        return * this = T(v);
     }
     BitFieldMember& operator+=(T v) {
         TURF_ASSERT(T(*this) + v <= Maximum); // result must fit inside the bitfield member
@@ -75,7 +76,8 @@ template <typename T, int Offset, int Bits> struct BitFieldMember {
 // All members are public to simplify compliance with sections 9.0.7 and
 // 9.5.1 of the C++11 standard, thereby avoiding undefined behavior.
 //---------------------------------------------------------
-template <typename T, int BaseOffset, int BitsPerItem, int NumItems> struct BitFieldArray {
+template <typename T, int BaseOffset, int BitsPerItem, int NumItems>
+struct BitFieldArray {
     T value;
 
     TURF_STATIC_ASSERT(BaseOffset + BitsPerItem * NumItems <= (int) sizeof(T) * 8);

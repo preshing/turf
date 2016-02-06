@@ -17,7 +17,7 @@
 
 namespace turf {
 
-struct CPUTimer_Mach  {
+struct CPUTimer_Mach {
     typedef int64_t Duration;
 
     struct Point {
@@ -31,13 +31,13 @@ struct CPUTimer_Mach  {
             return tick - b.tick;
         }
         bool operator<(Point b) const {
-            return (Duration) (tick - b.tick) < 0;  // Handles wrap-around
+            return (Duration)(tick - b.tick) < 0; // Handles wrap-around
         }
         bool operator>=(Point b) const {
-            return (Duration) (tick - b.tick) >= 0; // Handles wrap-around
+            return (Duration)(tick - b.tick) >= 0; // Handles wrap-around
         }
     };
-    
+
     static Point get() {
         return Point(mach_absolute_time());
     }
@@ -55,7 +55,7 @@ struct CPUTimer_Mach  {
             return duration * secondsPerTick;
         }
         Duration toDuration(float seconds) const {
-            return (Duration) (seconds * ticksPerSecond);
+            return (Duration)(seconds * ticksPerSecond);
         }
     };
 };

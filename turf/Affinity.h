@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_AFFINITY_PATH)
     #if TURF_TARGET_WIN32

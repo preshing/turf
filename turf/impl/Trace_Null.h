@@ -26,10 +26,12 @@ struct Trace_Null {
 
 } // namespace turf
 
+// clang-format off
 #define TURF_TRACE_DECLARE(group, count)
 #define TURF_TRACE_DEFINE_BEGIN(group, count)
 #define TURF_TRACE_DEFINE(desc)
 #define TURF_TRACE_DEFINE_END(group, count)
 #define TURF_TRACE(group, id, str, param1, param2) do {} while (0)
+// clang-format on
 
 #endif // TURF_IMPL_TRACE_NULL_H

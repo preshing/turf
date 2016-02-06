@@ -21,14 +21,14 @@
 #include <mach/thread_act.h>
 
 namespace turf {
-    
+
 class Affinity_Mach {
 private:
     bool m_isAccurate;
     u32 m_numHWThreads;
     u32 m_numPhysicalCores;
     u32 m_hwThreadsPerCore;
-    
+
 public:
     Affinity_Mach() : m_isAccurate(false), m_numHWThreads(1), m_numPhysicalCores(1), m_hwThreadsPerCore(1) {
         int count;
@@ -52,7 +52,7 @@ public:
             }
         }
     }
-    
+
     bool isAccurate() const {
         return m_isAccurate;
     }
@@ -60,28 +60,30 @@ public:
     u32 getNumPhysicalCores() const {
         return m_numPhysicalCores;
     }
-    
+
     u32 getNumHWThreads() const {
         return m_numHWThreads;
     }
-    
+
     u32 getNumHWThreadsForCore(ureg core) const {
         TURF_ASSERT(core < m_numPhysicalCores);
         return m_hwThreadsPerCore;
     }
-    
+
     bool setAffinity(ureg core, ureg hwThread) {
         TURF_ASSERT(core < m_numPhysicalCores);
         TURF_ASSERT(hwThread < m_hwThreadsPerCore);
         u32 index = core * m_hwThreadsPerCore + hwThread;
         thread_t thread = mach_thread_self();
-        thread_affinity_policy_data_t policyInfo = { (integer_t) index };
-        // Note: The following returns KERN_NOT_SUPPORTED on iOS. (Tested on iOS 9.2.)
-        kern_return_t result = thread_policy_set(thread, THREAD_AFFINITY_POLICY, (thread_policy_t) &policyInfo, THREAD_AFFINITY_POLICY_COUNT);
+        thread_affinity_policy_data_t policyInfo = {(integer_t) index};
+        // Note: The following returns KERN_NOT_SUPPORTED on iOS. (Tested on iOS
+        // 9.2.)
+        kern_return_t result =
+            thread_policy_set(thread, THREAD_AFFINITY_POLICY, (thread_policy_t) &policyInfo, THREAD_AFFINITY_POLICY_COUNT);
         return (result == KERN_SUCCESS);
     }
 };
-    
+
 } // namespace turf
 
 #endif // TURF_IMPL_AFFINITY_MACH_H

@@ -18,46 +18,46 @@ namespace turf {
 struct CPUTimer_Win32 {
     typedef int64_t Duration;
 
-	struct Point {
-		uint64_t tick;
-		Point(uint64_t tick = 0) : tick(tick) {
-		}
+    struct Point {
+        uint64_t tick;
+        Point(uint64_t tick = 0) : tick(tick) {
+        }
         Point operator+(Duration d) const {
-	        return Point(tick + d);
+            return Point(tick + d);
         }
         Duration operator-(Point b) const {
-	        return tick - b.tick;
+            return tick - b.tick;
         }
         bool operator<(Point b) const {
-            return (Duration) (tick - b.tick) < 0;	// Handles wrap-around
+            return (Duration)(tick - b.tick) < 0; // Handles wrap-around
         }
         bool operator>=(Point b) const {
-            return (Duration) (tick - b.tick) >= 0;	// Handles wrap-around
+            return (Duration)(tick - b.tick) >= 0; // Handles wrap-around
         }
-	};
-	
-	static Point get() {
-	    LARGE_INTEGER now;
-	    QueryPerformanceCounter(&now);
-	    return Point(now.QuadPart);
-	}
+    };
 
-	struct Converter {
-		float ticksPerSecond;
-		float secondsPerTick;
-		Converter() {
-		    LARGE_INTEGER freq;
-		    QueryPerformanceFrequency(&freq);
-		    ticksPerSecond = (float) freq.QuadPart;
-		    secondsPerTick = 1.0f / ticksPerSecond;
-		}
-		float toSeconds(Duration duration) const {
-			return duration * secondsPerTick;
-		}
-		Duration toDuration(float seconds) const {
-			return (Duration) (seconds * ticksPerSecond);
-		}
-	};
+    static Point get() {
+        LARGE_INTEGER now;
+        QueryPerformanceCounter(&now);
+        return Point(now.QuadPart);
+    }
+
+    struct Converter {
+        float ticksPerSecond;
+        float secondsPerTick;
+        Converter() {
+            LARGE_INTEGER freq;
+            QueryPerformanceFrequency(&freq);
+            ticksPerSecond = (float) freq.QuadPart;
+            secondsPerTick = 1.0f / ticksPerSecond;
+        }
+        float toSeconds(Duration duration) const {
+            return duration * secondsPerTick;
+        }
+        Duration toDuration(float seconds) const {
+            return (Duration)(seconds * ticksPerSecond);
+        }
+    };
 };
 
 } // namespace turf

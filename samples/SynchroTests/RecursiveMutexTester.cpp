@@ -74,7 +74,7 @@ public:
 
             // Decide what the new lock count should be in the range [0, 4), biased towards low numbers.
             float f = std::uniform_real_distribution<float>(0.f, 1.f)(randomEngine);
-            ureg desiredLockCount = (ureg) (f * f * 4);
+            ureg desiredLockCount = (ureg)(f * f * 4);
 
             // Perform unlocks, if any.
             while (lockCount > desiredLockCount) {

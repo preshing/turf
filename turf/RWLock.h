@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_RWLOCK_PATH)
     // FIXME: Implement RWLock_CPP11/14, RWLock_Boost

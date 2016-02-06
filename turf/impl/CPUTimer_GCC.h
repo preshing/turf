@@ -18,25 +18,25 @@ namespace turf {
 struct CPUTimer_GCC {
     typedef int64_t Duration;
 
-	struct Point {
-		uint64_t tick;
-		Point(uint64_t tick = 0) : tick(tick) {
-		}
+    struct Point {
+        uint64_t tick;
+        Point(uint64_t tick = 0) : tick(tick) {
+        }
         Point operator+(Duration d) const {
-	        return Point(tick + d);
+            return Point(tick + d);
         }
         Duration operator-(Point b) const {
-	        return tick - b.tick;
+            return tick - b.tick;
         }
         bool operator<(Point b) const {
-            return (Duration) (tick - b.tick) < 0;	// Handles wrap-around
+            return (Duration)(tick - b.tick) < 0; // Handles wrap-around
         }
         bool operator>=(Point b) const {
-            return (Duration) (tick - b.tick) >= 0;	// Handles wrap-around
+            return (Duration)(tick - b.tick) >= 0; // Handles wrap-around
         }
-	};
-	
-	// clang-format off
+    };
+
+    // clang-format off
 	static Point get() {
 		#if TURF_CPU_X64 || TURF_CPU_X86
 			#if TURF_USE_RDTSCP
@@ -55,19 +55,19 @@ struct CPUTimer_GCC {
 			#error "Unsupported platform!"	    
 		#endif
 	}
-	// clang-format on
+    // clang-format on
 
-	struct Converter {
-		float ticksPerSecond;
-		float secondsPerTick;
-		Converter();
-		float toSeconds(Duration duration) const {
-			return duration * secondsPerTick;
-		}
-		Duration toDuration(float seconds) const {
-			return (Duration) (seconds * ticksPerSecond);
-		}
-	};
+    struct Converter {
+        float ticksPerSecond;
+        float secondsPerTick;
+        Converter();
+        float toSeconds(Duration duration) const {
+            return duration * secondsPerTick;
+        }
+        Duration toDuration(float seconds) const {
+            return (Duration)(seconds * ticksPerSecond);
+        }
+    };
 };
 
 } // namespace turf

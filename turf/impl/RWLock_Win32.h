@@ -41,7 +41,7 @@ public:
     void lockShared() {
         AcquireSRWLockShared(&m_rwLock);
     }
-    
+
     void unlockShared() {
         ReleaseSRWLockShared(&m_rwLock);
     }

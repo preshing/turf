@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose implementation based on turf_config.h:
 #if TURF_USE_DLMALLOC
     #define TURF_IMPL_HEAP_PATH "impl/Heap_DL.h"

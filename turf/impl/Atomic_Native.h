@@ -131,7 +131,8 @@ public:
         return !!turf_compareExchange8(&m_value, expected, desired, (turf_memoryOrder_t) memoryOrder);
     }
     bool compareExchangeStrong(bool& expected, bool desired, MemoryOrder memoryOrder) {
-        uint8_t previous = turf_compareExchange8(&m_value, (uint8_t) expected, (uint8_t) desired, (turf_memoryOrder_t) memoryOrder);
+        uint8_t previous =
+            turf_compareExchange8(&m_value, (uint8_t) expected, (uint8_t) desired, (turf_memoryOrder_t) memoryOrder);
         bool result = (previous == (uint8_t) expected);
         if (!result)
             expected = !!previous;
@@ -139,7 +140,8 @@ public:
     }
     bool compareExchangeWeak(bool& expected, u8 desired, MemoryOrder success, MemoryOrder failure) {
         uint8_t expected8 = (uint8_t) expected;
-        bool result = !!turf_compareExchangeWeak8(&m_value, &expected8, (uint8_t) desired, (turf_memoryOrder_t) success, (turf_memoryOrder_t) failure);
+        bool result = !!turf_compareExchangeWeak8(&m_value, &expected8, (uint8_t) desired, (turf_memoryOrder_t) success,
+                                                  (turf_memoryOrder_t) failure);
         if (!result)
             expected = !!expected8;
         return result;
@@ -150,7 +152,8 @@ public:
 };
 
 // Specialize for pointers
-template <typename T> class Atomic_Native<T*> {
+template <typename T>
+class Atomic_Native<T*> {
 private:
     turf_atomicPtr_t m_value;
 
@@ -188,12 +191,14 @@ public:
         return result;
     }
     bool compareExchangeWeak(T*& expected, T* desired, MemoryOrder success, MemoryOrder failure) {
-        return !!turf_compareExchangeWeakPtr(&m_value, (void**) &expected, desired, (turf_memoryOrder_t) success, (turf_memoryOrder_t) failure);
+        return !!turf_compareExchangeWeakPtr(&m_value, (void**) &expected, desired, (turf_memoryOrder_t) success,
+                                             (turf_memoryOrder_t) failure);
     }
     T* exchange(T* desired, MemoryOrder memoryOrder) {
         return (T*) turf_exchangePtr(&m_value, desired, (turf_memoryOrder_t) memoryOrder);
     }
-    // If you need other RMW operations on an atomic pointer, use turf::Atomic<uptr> and cast argument/return values by hand
+    // If you need other RMW operations on an atomic pointer, use
+    // turf::Atomic<uptr> and cast argument/return values by hand
 };
 
 } // namespace turf

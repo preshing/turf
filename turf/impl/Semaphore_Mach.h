@@ -34,7 +34,7 @@ public:
     void wait() {
         semaphore_wait(m_semaphore);
     }
-    
+
     void signal(ureg count = 1) {
         while (count-- > 0)
             semaphore_signal(m_semaphore);

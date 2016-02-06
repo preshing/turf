@@ -27,13 +27,13 @@ int main() {
     memset(buckets, 0, sizeof(u64) * NumBuckets);
     turf::extra::Random rand;
 
-//    std::default_random_engine generator;
-//    std::uniform_int_distribution<u32> distribution;
+    // std::default_random_engine generator;
+    // std::uniform_int_distribution<u32> distribution;
 
     for (;;) {
         for (ureg i = 0; i < 100000; i++) {
             u32 v = rand.next32();
-//            u32 v = distribution(generator);
+            // u32 v = distribution(generator);
             ureg index = ureg(v / float(4294967297.0f / NumBuckets));
             buckets[index]++;
         }

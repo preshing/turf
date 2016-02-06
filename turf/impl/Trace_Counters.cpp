@@ -16,7 +16,7 @@
 
 namespace turf {
 
-Trace_Counters Trace_Counters::Instance;  // Zero-initialized
+Trace_Counters Trace_Counters::Instance; // Zero-initialized
 
 void Trace_Counters::addGroup(TraceGroup* group) {
     TraceGroup* oldHead = m_firstGroup.load(turf::Relaxed);

@@ -56,7 +56,7 @@ private:
     turf::Mutex m_mutex;
     Page* m_head;
     turf::Atomic<Page*> m_tail;
-    ureg m_numPages;        // Protected by m_mutex
+    ureg m_numPages; // Protected by m_mutex
 
     Event* allocateEventFromNewPage();
 

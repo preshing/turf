@@ -16,8 +16,11 @@
 #include <turf/Core.h>
 
 namespace turf {
-template <typename LockType> class LockGuard;
+template <typename LockType>
+class LockGuard;
 } // namespace turf
+
+// clang-format off
 
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_MUTEX_PATH)

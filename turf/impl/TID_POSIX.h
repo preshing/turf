@@ -26,15 +26,15 @@ namespace turf {
 
 class TID_POSIX {
 public:
-	// This only works when pthread_t is an integer type, as it is in the GNU C Library >= 2.3.3.
-	// If that's not true for your Pthreads library, we'll need to extend Turf to fetch TIDs
-	// from somewehere else in the environment.
+    // This only works when pthread_t is an integer type, as it is in the GNU C Library >= 2.3.3.
+    // If that's not true for your Pthreads library, we'll need to extend Turf to fetch TIDs
+    // from somewehere else in the environment.
     typedef util::BestFit<pthread_t>::Unsigned TID;
     typedef util::BestFit<pid_t>::Unsigned PID;
 
     static TID getCurrentThreadID() {
-	    // FIXME: On Linux, would the kernel task ID be more useful for debugging?
-	    // If so, detect NPTL at compile time and create TID_NPTL.h which uses gettid() instead.
+        // FIXME: On Linux, would the kernel task ID be more useful for debugging?
+        // If so, detect NPTL at compile time and create TID_NPTL.h which uses gettid() instead.
         return pthread_self();
     }
 

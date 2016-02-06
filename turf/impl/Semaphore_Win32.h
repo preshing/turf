@@ -25,7 +25,7 @@ public:
     Semaphore_Win32() {
         m_sem = CreateSemaphore(NULL, 0, INT32_MAX, NULL);
     }
-    
+
     ~Semaphore_Win32() {
         CloseHandle(m_sem);
     }

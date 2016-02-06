@@ -23,27 +23,29 @@ public:
     typedef util::BestFit<DWORD>::Unsigned TID;
     typedef util::BestFit<DWORD>::Unsigned PID;
 
+    // clang-format off
     static TID getCurrentThreadID() {
-#if TURF_CPU_X64                                    // Windows x64
-        return ((DWORD*) __readgsqword(48))[18];    // Read directly from the TIB
-#elif TURF_CPU_X86                                  // Windows x86
-        return ((DWORD*) __readfsdword(24))[9];     // Read directly from the TIB
+#if TURF_CPU_X64                                 // Windows x64
+        return ((DWORD*) __readgsqword(48))[18]; // Read directly from the TIB
+#elif TURF_CPU_X86 // Windows x86
+        return ((DWORD*) __readfsdword(24))[9]; // Read directly from the TIB
 #else
         return GetCurrentThreadID();
 #endif
     }
 
     static PID getCurrentProcessID() {
-#if TURF_CPU_X64                                    // Windows x64
-        return ((DWORD*) __readgsqword(48))[16];    // Read directly from the TIB
-#elif TURF_CPU_X86                                  // Windows x86
-        return ((DWORD*) __readfsdword(24))[8];     // Read directly from the TIB
+#if TURF_CPU_X64                                 // Windows x64
+        return ((DWORD*) __readgsqword(48))[16]; // Read directly from the TIB
+#elif TURF_CPU_X86         // Windows x86
+        return ((DWORD*) __readfsdword(24))[8]; // Read directly from the TIB
 #elif TURF_TARGET_XBOX_360 // Xbox 360
         return 0;
 #else
         return GetCurrentProcessID();
 #endif
     }
+    // clang-format on
 };
 
 } // namespace turf

@@ -19,7 +19,7 @@
 #include <vector>
 
 namespace turf {
-    
+
 class Affinity_Linux {
 private:
     struct CoreInfo {
@@ -50,7 +50,7 @@ public:
 
     bool setAffinity(ureg core, ureg hwThread);
 };
-    
+
 } // namespace turf
 
 #endif // TURF_IMPL_AFFINITY_LINUX_H

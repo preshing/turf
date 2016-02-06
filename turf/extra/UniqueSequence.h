@@ -24,8 +24,8 @@ struct UniqueSequence {
     u32 param0;
     u32 param1;
 
-    UniqueSequence(u32 startIndex = 0, u32 param0 = 0x7012fe08, u32 param1 =
-        0x5bf03635) : curIndex(startIndex), param0(param0), param1(param1) {
+    UniqueSequence(u32 startIndex = 0, u32 param0 = 0x7012fe08, u32 param1 = 0x5bf03635)
+        : curIndex(startIndex), param0(param0), param1(param1) {
     }
 
     UniqueSequence(Random& seed) : UniqueSequence(seed.next32(), seed.next32()) {

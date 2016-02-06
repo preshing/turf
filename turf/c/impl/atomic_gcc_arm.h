@@ -20,9 +20,11 @@ extern "C" {
 //-------------------------------------
 //  Atomic types
 //-------------------------------------
-// In compilers targeting the "old" ABI, 64-bit values are not guaranteed 8-byte aligned.
+// In compilers targeting the "old" ABI, 64-bit values are not guaranteed 8-byte
+// aligned.
 // These wrappers enforce the correct alignment.
-// Warning: Local variables on the stack may still not be aligned using some compilers:
+// Warning: Local variables on the stack may still not be aligned using some
+// compilers:
 // http://gcc.gnu.org/bugzilla/show_bug.cgi?id=24691
 // XCode 3.2.5 with iPhoneOS SDK 4.2 and GCC 4.2 demonstrates both problems.
 typedef struct { volatile uint8_t nonatomic; } turf_atomic8_t;
@@ -76,8 +78,10 @@ TURF_C_INLINE void turf_store8Relaxed(turf_atomic8_t* object, uint8_t desired) {
 }
 
 #if (TURF_CPU_ARM_VERSION == 6) && TURF_CPU_ARM_THUMB
-// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not available.
-// We need to switch to ARM mode, by calling standalone functions, to use these instructions.
+// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not
+// available.
+// We need to switch to ARM mode, by calling standalone functions, to use these
+// instructions.
 uint8_t turf_compareExchange8Relaxed(turf_atomic8_t* object, uint8_t expected, uint8_t desired);
 uint8_t turf_fetchAdd8Relaxed(turf_atomic8_t* object, int8_t operand);
 uint8_t turf_fetchAnd8Relaxed(turf_atomic8_t* object, uint8_t operand);
@@ -87,8 +91,10 @@ uint8_t turf_fetchOr8Relaxed(turf_atomic8_t* object, uint8_t operand);
 TURF_C_INLINE uint8_t turf_compareExchange8Relaxed(turf_atomic8_t* object, uint8_t expected, uint8_t desired) {
     uintreg_t status;
     uint8_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexb  %0, [%3]\n"
                  "       cmp     %0, %4\n"
                  "       bne     2f\n"
@@ -105,8 +111,10 @@ TURF_C_INLINE uint8_t turf_compareExchange8Relaxed(turf_atomic8_t* object, uint8
 TURF_C_INLINE intreg_t turf_compareExchangeWeak8Relaxed(turf_atomic8_t* object, uint8_t* expected, uint8_t desired) {
     uintreg_t status = 1;
     uint8_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexb  %0, [%3]\n"
                  "       cmp     %0, %4\n"
                  "       bne     2f\n"
@@ -123,8 +131,10 @@ TURF_C_INLINE intreg_t turf_compareExchangeWeak8Relaxed(turf_atomic8_t* object, 
 TURF_C_INLINE uint32_t turf_exchange8Relaxed(turf_atomic8_t* object, uint8_t desired) {
     uintreg_t status;
     uint8_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexb  %0, [%3]\n"
                  "       strexb  %1, %4, [%3]\n"
                  "       cmp     %1, #0\n"
@@ -194,8 +204,10 @@ TURF_C_INLINE void turf_store16Relaxed(turf_atomic16_t* object, uint16_t desired
 }
 
 #if (TURF_CPU_ARM_VERSION == 6) && TURF_CPU_ARM_THUMB
-// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not available.
-// We need to switch to ARM mode, by calling standalone functions, to use these instructions.
+// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not
+// available.
+// We need to switch to ARM mode, by calling standalone functions, to use these
+// instructions.
 uint16_t turf_compareExchange16Relaxed(turf_atomic16_t* object, uint16_t expected, uint16_t desired);
 uint16_t turf_fetchAdd16Relaxed(turf_atomic16_t* object, int16_t operand);
 uint16_t turf_fetchAnd16Relaxed(turf_atomic16_t* object, uint16_t operand);
@@ -205,8 +217,10 @@ uint16_t turf_fetchOr16Relaxed(turf_atomic16_t* object, uint16_t operand);
 TURF_C_INLINE uint16_t turf_compareExchange16Relaxed(turf_atomic16_t* object, uint16_t expected, uint16_t desired) {
     uintreg_t status;
     uint16_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexh  %0, [%3]\n"
                  "       cmp     %0, %4\n"
                  "       bne     2f\n"
@@ -223,8 +237,10 @@ TURF_C_INLINE uint16_t turf_compareExchange16Relaxed(turf_atomic16_t* object, ui
 TURF_C_INLINE intreg_t turf_compareExchangeWeak16Relaxed(turf_atomic16_t* object, uint16_t* expected, uint16_t desired) {
     uintreg_t status = 1;
     uint16_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexh  %0, [%3]\n"
                  "       cmp     %0, %4\n"
                  "       bne     2f\n"
@@ -241,8 +257,10 @@ TURF_C_INLINE intreg_t turf_compareExchangeWeak16Relaxed(turf_atomic16_t* object
 TURF_C_INLINE uint32_t turf_exchange16Relaxed(turf_atomic16_t* object, uint16_t desired) {
     uintreg_t status;
     uint16_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrexh  %0, [%3]\n"
                  "       strexh  %1, %4, [%3]\n"
                  "       cmp     %1, #0\n"
@@ -312,8 +330,10 @@ TURF_C_INLINE void turf_store32Relaxed(turf_atomic32_t* object, uint32_t desired
 }
 
 #if (TURF_CPU_ARM_VERSION == 6) && TURF_CPU_ARM_THUMB
-// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not available.
-// We need to switch to ARM mode, by calling standalone functions, to use these instructions.
+// When compiling for ARMv6 in Thumb mode, the ldrex/strex instructions are not
+// available.
+// We need to switch to ARM mode, by calling standalone functions, to use these
+// instructions.
 uint32_t turf_compareExchange32Relaxed(turf_atomic32_t* object, uint32_t expected, uint32_t desired);
 uint32_t turf_fetchAdd32Relaxed(turf_atomic32_t* object, int32_t operand);
 uint32_t turf_fetchAnd32Relaxed(turf_atomic32_t* object, uint32_t operand);
@@ -323,8 +343,10 @@ uint32_t turf_fetchOr32Relaxed(turf_atomic32_t* object, uint32_t operand);
 TURF_C_INLINE uint32_t turf_compareExchange32Relaxed(turf_atomic32_t* object, uint32_t expected, uint32_t desired) {
     uintreg_t status;
     uint32_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrex   %0, [%3]\n"
                  "       cmp     %0, %4\n"
                  "       bne     2f\n"
@@ -342,8 +364,10 @@ TURF_C_INLINE intreg_t turf_compareExchangeWeak32Relaxed(turf_atomic32_t* object
     uintreg_t status;
     uint32_t previous;
     uint32_t exp = *expected;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("       mov     %1, #1\n"
                  "       ldrex   %0, [%3]\n"
                  "       cmp     %0, %4\n"
@@ -361,8 +385,10 @@ TURF_C_INLINE intreg_t turf_compareExchangeWeak32Relaxed(turf_atomic32_t* object
 TURF_C_INLINE uint32_t turf_exchange32Relaxed(turf_atomic32_t* object, uint32_t desired) {
     uintreg_t status;
     uint32_t previous;
-    // The "Ir" constraint allows the compiler to pass "expected" to the cmp instruction as an immediate
-    // operand if it can. Otherwise, it falls back to loading it into a register first.
+    // The "Ir" constraint allows the compiler to pass "expected" to the cmp
+    // instruction as an immediate
+    // operand if it can. Otherwise, it falls back to loading it into a register
+    // first.
     asm volatile("1:     ldrex   %0, [%3]\n"
                  "       strex   %1, %4, [%3]\n"
                  "       cmp     %1, #0\n"

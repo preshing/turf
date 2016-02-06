@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_SEMAPHORE_PATH)
     // FIXME: Implement Semaphore_CondVar and use it in TURF_PREFER_CPP11/BOOST configs

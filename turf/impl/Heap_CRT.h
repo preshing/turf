@@ -29,7 +29,7 @@ public:
         void* realloc(void* ptr, ureg newSize) {
             return ::realloc(ptr, newSize);
         }
-        
+
         void free(void* ptr) {
             ::free(ptr);
         }

@@ -15,6 +15,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_CONDITIONVARIABLE_PATH)
     #if TURF_PREFER_CPP11

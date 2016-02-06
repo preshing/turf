@@ -39,11 +39,11 @@ public:
     u32 getNumPhysicalCores() const {
         return m_numPhysicalCores;
     }
-    
+
     u32 getNumHWThreads() const {
         return m_numHWThreads;
     }
-    
+
     u32 getNumHWThreadsForCore(ureg core) const {
         TURF_ASSERT(core < m_numPhysicalCores);
         return util::countSetBits(m_physicalCoreMasks[core]);

@@ -4,8 +4,6 @@
 
 using namespace turf::intTypes;
 
-// clang-format off 
-
 struct Node {
     Node* next;
 };

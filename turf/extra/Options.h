@@ -22,7 +22,7 @@ namespace turf {
 namespace extra {
 
 struct Option {
-    const char* longName;       // required
+    const char* longName; // required
     char shortName;
     bool takesParam;
     const char* description;
@@ -40,7 +40,7 @@ private:
     KeywordArgs m_keywordArgs;
 
 public:
-    Options(const Option *options, ureg numOptions, const char* argString = NULL);
+    Options(const Option* options, ureg numOptions, const char* argString = NULL);
     void parse(int argc, const char** argv);
     sreg getInteger(const char* longName, sreg defaultValue);
     double getDouble(const char* longName, double defaultValue);

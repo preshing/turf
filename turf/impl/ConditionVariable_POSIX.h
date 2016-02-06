@@ -17,26 +17,26 @@
 #include <turf/impl/Mutex_POSIX.h>
 
 namespace turf {
-    
+
 class ConditionVariable_POSIX {
 private:
     pthread_cond_t m_condVar;
-    
+
 public:
     ConditionVariable_POSIX() {
         pthread_condattr_t attr;
         pthread_condattr_init(&attr);
         pthread_cond_init(&m_condVar, &attr);
     }
-    
+
     ~ConditionVariable_POSIX() {
         pthread_cond_destroy(&m_condVar);
     }
-    
+
     void wait(turf::LockGuard<Mutex_POSIX>& guard) {
         pthread_cond_wait(&m_condVar, &guard.getMutex().m_mutex);
     }
-    
+
     void wakeOne() {
         pthread_cond_signal(&m_condVar);
     }
@@ -45,7 +45,7 @@ public:
         pthread_cond_broadcast(&m_condVar);
     }
 };
-    
+
 } // namespace turf
 
 #endif // TURF_IMPL_CONDITIONVARIABLE_POSIX_H

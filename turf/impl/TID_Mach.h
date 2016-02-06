@@ -19,21 +19,21 @@
 #include <mach/mach_types.h>
 
 namespace turf {
-    
+
 class TID_Mach {
 public:
     typedef util::BestFit<thread_port_t>::Unsigned TID;
     typedef util::BestFit<pid_t>::Unsigned PID;
-    
+
     static TID getCurrentThreadID() {
         return pthread_mach_thread_np(pthread_self());
     }
-    
+
     static PID getCurrentProcessID() {
         return getpid();
     }
 };
-    
+
 } // namespace turf
 
 #endif // TURF_IMPL_TID_MACH_H

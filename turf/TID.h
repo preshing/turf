@@ -18,6 +18,8 @@
 
 #include <turf/Core.h>
 
+// clang-format off
+
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_TID_PATH)
     #if TURF_TARGET_WIN32

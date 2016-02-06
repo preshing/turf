@@ -19,7 +19,7 @@
 namespace turf {
 
 struct CPUTimer_CPP11 {
-	struct Duration : std::chrono::high_resolution_clock::duration {
+    struct Duration : std::chrono::high_resolution_clock::duration {
         typedef std::chrono::high_resolution_clock::duration Base;
         Duration(Base b) : Base(b) {
         }
@@ -31,29 +31,29 @@ struct CPUTimer_CPP11 {
         }
     };
 
-	struct Point : std::chrono::high_resolution_clock::time_point {
+    struct Point : std::chrono::high_resolution_clock::time_point {
         typedef std::chrono::high_resolution_clock::time_point Base;
         Point(Base b) : Base(b) {
         }
         // Add the ability construct from an arithmetic type (for random seeds):
         Point(Duration::rep rep) : Base(Duration(rep)) {
-        }        
+        }
         Duration operator-(const Point& b) const {
-	        return Duration(Base(*this) - Base(b));
+            return Duration(Base(*this) - Base(b));
         }
     };
 
     static Point get() {
-		return Point(std::chrono::high_resolution_clock::now());
-	}	
-	
-	struct Converter {
+        return Point(std::chrono::high_resolution_clock::now());
+    }
+
+    struct Converter {
         Converter() {
         }
-		static float toSeconds(Duration duration) {
-			return std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
-		}
-	};	
+        static float toSeconds(Duration duration) {
+            return std::chrono::duration_cast<std::chrono::duration<float>>(duration).count();
+        }
+    };
 };
 
 } // namespace turf

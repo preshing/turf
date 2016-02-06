@@ -1,4 +1,5 @@
-template <> class Atomic_Native<TURF_ATOMIC_INC_TYPE> {
+template <>
+class Atomic_Native<TURF_ATOMIC_INC_TYPE> {
 private:
     turf_atomic8_t m_value;
 
@@ -29,14 +30,16 @@ public:
         return turf_compareExchange8(&m_value, expected, desired, (turf_memoryOrder_t) memoryOrder);
     }
     bool compareExchangeStrong(TURF_ATOMIC_INC_TYPE& expected, u8 desired, MemoryOrder memoryOrder) {
-        TURF_ATOMIC_INC_TYPE previous = (TURF_ATOMIC_INC_TYPE) turf_compareExchange8(&m_value, (uint8_t) expected, desired, (turf_memoryOrder_t) memoryOrder);
+        TURF_ATOMIC_INC_TYPE previous =
+            (TURF_ATOMIC_INC_TYPE) turf_compareExchange8(&m_value, (uint8_t) expected, desired, (turf_memoryOrder_t) memoryOrder);
         bool result = (previous == expected);
         if (!result)
             expected = previous;
         return result;
     }
     bool compareExchangeWeak(TURF_ATOMIC_INC_TYPE& expected, u8 desired, MemoryOrder success, MemoryOrder failure) {
-        return !!turf_compareExchangeWeak8(&m_value, (uint8_t*) &expected, desired, (turf_memoryOrder_t) success, (turf_memoryOrder_t) failure);
+        return !!turf_compareExchangeWeak8(&m_value, (uint8_t*) &expected, desired, (turf_memoryOrder_t) success,
+                                           (turf_memoryOrder_t) failure);
     }
     TURF_ATOMIC_INC_TYPE exchange(u8 desired, MemoryOrder memoryOrder) {
         return turf_exchange8(&m_value, desired, (turf_memoryOrder_t) memoryOrder);

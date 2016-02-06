@@ -29,7 +29,8 @@ private:
         turf::Thread thread;
         bool mustExit;
 
-        WorkerThread(JobDispatcher* dispatcher, ureg threadIndex) : dispatcher(dispatcher), threadIndex(threadIndex), mustExit(false) {
+        WorkerThread(JobDispatcher* dispatcher, ureg threadIndex)
+            : dispatcher(dispatcher), threadIndex(threadIndex), mustExit(false) {
         }
     };
 
@@ -39,7 +40,7 @@ private:
     bool m_useAffinities;
     std::vector<WorkerThread*> m_threads;
     sreg m_threadFilter;
-    Action* m_action;    
+    Action* m_action;
     void* m_param;
     turf::extra::SpinKicker m_startGate;
     turf::extra::SpinKicker m_endGate;
@@ -92,7 +93,7 @@ public:
     ureg getNumPhysicalCores() const {
         return m_affinity.getNumPhysicalCores();
     }
-    
+
     void setNumSpawnedThreads(ureg numThreads) {
         TURF_ASSERT(numThreads > 0);
         if (m_useAffinities)
@@ -110,8 +111,7 @@ public:
             }
             m_threads.resize(numThreads);
             m_endGate.kick(numThreads - 1);
-        }
-        else {
+        } else {
             for (; oldNumThreads < numThreads; oldNumThreads++) {
                 WorkerThread* thread = new WorkerThread(this, oldNumThreads);
                 m_threads.push_back(thread);
@@ -120,7 +120,7 @@ public:
         }
     }
 
-    template<class T>
+    template <class T>
     void kickOne(ureg threadIndex, void (T::*pmf)(), T& target) {
         // Define the action
         struct Closure {
@@ -128,10 +128,10 @@ public:
             T* target;
             static void thunk(void* param, ureg) {
                 Closure* self = (Closure*) param;
-                TURF_CALL_MEMBER(*self->target, self->pmf)();
+                TURF_CALL_MEMBER (*self->target, self->pmf)();
             }
         };
-        Closure closure = { pmf, &target };
+        Closure closure = {pmf, &target};
         m_threadFilter = threadIndex;
         m_action = Closure::thunk;
         m_param = &closure;
@@ -145,18 +145,18 @@ public:
         resetAction();
     }
 
-    template<class T>
-    void kickMulti(void (T::*pmf)(), T* targets, ureg numTargets) {        
+    template <class T>
+    void kickMulti(void (T::*pmf)(), T* targets, ureg numTargets) {
         // Define the action
         struct Closure {
             void (T::*pmf)();
             T* targets;
             static void thunk(void* param, ureg index) {
-                Closure* self = (Closure*) param; 
+                Closure* self = (Closure*) param;
                 TURF_CALL_MEMBER(self->targets[index], self->pmf)();
-            }            
+            }
         };
-        Closure closure = { pmf, targets };
+        Closure closure = {pmf, targets};
         m_action = Closure::thunk;
         m_param = &closure;
         // Kick the threads
@@ -167,18 +167,18 @@ public:
         resetAction();
     }
 
-    template<class T>
+    template <class T>
     void kick(void (T::*pmf)(ureg), T& target) {
         // Define the action
         struct Closure {
             void (T::*pmf)(ureg);
             T* target;
             static void thunk(void* param, ureg index) {
-                Closure* self = (Closure*) param; 
-                TURF_CALL_MEMBER(*self->target, self->pmf)(index);
+                Closure* self = (Closure*) param;
+                TURF_CALL_MEMBER (*self->target, self->pmf)(index);
             }
         };
-        Closure closure = { pmf, &target };
+        Closure closure = {pmf, &target};
         m_action = Closure::thunk;
         m_param = &closure;
         // Kick the threads
@@ -197,7 +197,7 @@ public:
                 self->func(index);
             }
         };
-        Closure closure = { func };
+        Closure closure = {func};
         m_action = Closure::thunk;
         m_param = &closure;
         // Kick the threads

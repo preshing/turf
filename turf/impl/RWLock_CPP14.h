@@ -34,7 +34,7 @@ public:
     void lockShared() {
         std::shared_mutex::lockShared();
     }
-    
+
     void unlockShared() {
         std::shared_mutex::unlockShared();
     }

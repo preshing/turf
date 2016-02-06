@@ -43,7 +43,7 @@ public:
             rc = sem_wait(&m_sem);
         } while (rc == -1 && errno == EINTR);
     }
-    
+
     void signal(ureg count = 1) {
         while (count-- > 0)
             sem_post(&m_sem);

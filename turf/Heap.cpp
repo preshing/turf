@@ -17,10 +17,11 @@ TURF_IMPL_HEAP_TYPE TurfHeap;
 
 //---------------------------------------------------------------------------
 // Override operators new/delete
-// C++ allows us to replace global operators new/delete with our own thanks to weak linking.
+// C++ allows us to replace global operators new/delete with our own thanks to
+// weak linking.
 //---------------------------------------------------------------------------
 #if TURF_REPLACE_OPERATOR_NEW
-void *operator new(std::size_t size) {
+void* operator new(std::size_t size) {
     return TURF_HEAP.alloc(size);
 }
 

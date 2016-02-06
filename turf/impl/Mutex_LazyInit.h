@@ -40,7 +40,7 @@ private:
             // FIXME: Implement reusable AdaptiveBackoff class and apply it here
         }
         if (!m_initFlag.loadNonatomic()) {
-            new(&getMutex()) Mutex;
+            new (&getMutex()) Mutex;
             m_initFlag.store(true, turf::Release);
         }
         m_spinLock.store(false, turf::Release);
@@ -54,7 +54,7 @@ public:
 
     // There should be no threads racing to lock when the destructor is called.
     // It's valid to attempt to lock after the destructor, though.
-    // This permits Mutex_LazyInit to be used at global scope where destructors are called in an arbitrary oreder.
+    // This permits Mutex_LazyInit to be used at global scope where destructors are called in an arbitrary order.
     ~Mutex_LazyInit() {
         if (m_initFlag.loadNonatomic()) {
             getMutex().Mutex::~Mutex();

@@ -22,7 +22,7 @@
 namespace turf {
 namespace extra {
 
-Options::Options(const Option *options, ureg numOptions, const char* argString)
+Options::Options(const Option* options, ureg numOptions, const char* argString)
     : m_programName("???"), m_argString(argString), m_options(options), m_numOptions(numOptions) {
     m_helpOption.longName = "help";
     m_helpOption.shortName = 'h';
@@ -34,8 +34,8 @@ void Options::parse(int argc, const char** argv) {
     // Extract program name
     // FIXME: Just recognize one of the slashes depending on Windows or not.
     // Must make sure it works in Cygwin and MinGW.
-    TURF_ASSERT(argc >= 1);    
-    const char *programName = turf::util::max(strrchr(argv[0], '/'), strrchr(argv[0], '\\'));
+    TURF_ASSERT(argc >= 1);
+    const char* programName = turf::util::max(strrchr(argv[0], '/'), strrchr(argv[0], '\\'));
     if (programName)
         m_programName = programName + 1;
 
@@ -63,10 +63,10 @@ void Options::parse(int argc, const char** argv) {
         const char* param = NULL;
         if (arg[0] == '-') {
             const Option* opt = NULL;
-            if (arg[1] == '-') {                
+            if (arg[1] == '-') {
                 LongDict::const_iterator iter = longDict.find(arg + 2);
                 if (iter == longDict.end())
-                    printErrorAndExit("Unrecognized option %s", arg);                
+                    printErrorAndExit("Unrecognized option %s", arg);
                 opt = iter->second;
                 if (m_keywordArgs.find(opt->longName) != m_keywordArgs.end())
                     printErrorAndExit("Option %s was specified twice", arg);
@@ -87,17 +87,15 @@ void Options::parse(int argc, const char** argv) {
                         param = arg + 2;
                     else
                         printErrorAndExit("Option -%c does not take a parameter; \"%s\" provided", arg[1], arg + 2);
-                }
-                else if (opt->takesParam) {
+                } else if (opt->takesParam) {
                     if (++a >= argc)
                         printErrorAndExit("Option -%c requires a parameter", arg[1]);
                     param = argv[a];
                 }
             }
-            TURF_ASSERT(opt);            
+            TURF_ASSERT(opt);
             m_keywordArgs[opt->longName] = param;
-        }
-        else {
+        } else {
             m_positionalArgs.push_back(arg);
         }
     }

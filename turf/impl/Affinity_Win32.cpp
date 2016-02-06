@@ -36,8 +36,10 @@ Affinity_Win32::Affinity_Win32() {
             m_isAccurate = true;
             m_numPhysicalCores = 0;
             m_numHWThreads = 0;
-            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* endProcessorInfo = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*) TURF_PTR_OFFSET(startProcessorInfo, length);
-            for (SYSTEM_LOGICAL_PROCESSOR_INFORMATION* processorInfo = startProcessorInfo; processorInfo < endProcessorInfo; processorInfo++) {
+            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* endProcessorInfo =
+                (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*) TURF_PTR_OFFSET(startProcessorInfo, length);
+            for (SYSTEM_LOGICAL_PROCESSOR_INFORMATION* processorInfo = startProcessorInfo; processorInfo < endProcessorInfo;
+                 processorInfo++) {
                 if (processorInfo->Relationship == RelationProcessorCore) {
                     ureg hwt = util::countSetBits(processorInfo->ProcessorMask);
                     if (hwt == 0)

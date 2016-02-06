@@ -18,11 +18,11 @@
 
 namespace turf {
 
-class Mutex_CPP11 : protected std::mutex {    
+class Mutex_CPP11 : protected std::mutex {
 private:
     friend class LockGuard<Mutex_CPP11>;
 
-public: 
+public:
     Mutex_CPP11() : std::mutex() {
     }
 
@@ -33,14 +33,14 @@ public:
     bool tryLock() {
         return std::mutex::try_lock();
     }
-    
+
     void unlock() {
         std::mutex::unlock();
     }
 };
 
 // Specialize LockGuard<Mutex_CPP11> so that ConditionVariable_CPP11 can use it:
-template<>
+template <>
 class LockGuard<Mutex_CPP11> : public std::unique_lock<std::mutex> {
 public:
     LockGuard(Mutex_CPP11& mutex) : std::unique_lock<std::mutex>(mutex) {

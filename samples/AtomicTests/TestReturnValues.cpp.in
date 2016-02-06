@@ -5,7 +5,7 @@
 
 using namespace turf::intTypes;
 
-// clang-format off 
+// clang-format off
 
 static turf::Atomic<u${TEST_INT_BITSIZE}> g_object;
 

@@ -39,7 +39,8 @@ enum MemoryOrder {
     AcquireRelease = std::memory_order_acq_rel,
 };
 
-template <typename T> class Atomic_CPP11 : protected std::atomic<T> {
+template <typename T>
+class Atomic_CPP11 : protected std::atomic<T> {
 private:
     // Hide operator=
     T operator=(T value);
