@@ -96,7 +96,6 @@ if(TURF_MAKE_INSTALLABLE)
     install(DIRECTORY turf/ DESTINATION include/turf FILES_MATCHING PATTERN "*.h" PATTERN "*.inc")
     file(GLOB configHeaders "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
     install(FILES ${configHeaders} DESTINATION include)
-    install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*.cmake")
 endif()
 
 # Export include dirs/libraries to parent project if we were invoked using add_subdirectory().
