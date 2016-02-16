@@ -19,7 +19,8 @@
 
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_ATOMIC_PATH)
-    #if TURF_PREFER_CPP11 || TURF_CPU_ARM  // FIXME: Fix atomic_gcc_arm.c, support AArch64, then remove TURF_CPU_ARM check here
+    // FIXME: Fix atomic_gcc_arm.c, support AArch64, then remove TURF_CPU_ARM check here:
+    #if TURF_PREFER_CPP11 || TURF_CPU_ARM || TURF_CPU_POWERPC
         #define TURF_IMPL_ATOMIC_PATH "impl/Atomic_CPP11.h"
         #define TURF_IMPL_ATOMIC_TYPE turf::Atomic_CPP11
     #elif TURF_PREFER_BOOST

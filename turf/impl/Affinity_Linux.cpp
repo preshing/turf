@@ -44,7 +44,13 @@ Affinity_Linux::Affinity_Linux() : m_isAccurate(false), m_numHWThreads(0) {
         }
 
         void flush(Affinity_Linux& affinity) {
-            if (logicalProcessor >= 0 && coreID.physical >= 0 && coreID.core >= 0) {
+            if (logicalProcessor >= 0) {
+                if (coreID.physical < 0 && coreID.core < 0) {
+                    // On PowerPC Linux 3.2.0-4, /proc/cpuinfo outputs "processor", but not "physical id" or "core id".
+                    // Emulate a single physical CPU with N cores:
+                    coreID.physical = 0;
+                    coreID.core = logicalProcessor;
+                }
                 std::map<CoreID, u32>::iterator iter = coreIDToIndex.find(coreID);
                 u32 coreIndex;
                 if (iter == coreIDToIndex.end()) {
