@@ -34,7 +34,7 @@ Trace_MemLog::Event* Trace_MemLog::allocateEventFromNewPage() {
     // allocateEventFromNewPage and created a new page by the time we get take the lock.
     Page* oldTail = m_tail.loadNonatomic();
     if (oldTail->index.load(turf::Relaxed) < EventsPerPage) {
-        int index = oldTail->index.fetchAdd(1, turf::Relaxed);
+        sreg index = oldTail->index.fetchAdd(1, turf::Relaxed);
         // Yes! We got a slot on this page.
         if (index < EventsPerPage)
             return &oldTail->events[index];
