@@ -91,6 +91,7 @@ typedef uintptr_t uintreg_t;
 #define TURF_CAT(a, b) TURF_CAT2(a, b)
 #define TURF_UNIQUE_VARIABLE(prefix) TURF_CAT(prefix, __LINE__)
 #define TURF_PTR_OFFSET(ptr, ofs) ((void*)(((u8*)(void*)(ptr)) + (ofs)))
+#define TURF_MEMBER_OFFSET(type, member) offsetof(type, member)
 #define TURF_STATIC_ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 #define TURF_UNUSED(x) ((void) x)
 
