@@ -37,16 +37,16 @@ public:
     }
 
     u32 getNumPhysicalCores() const {
-        return m_numPhysicalCores;
+        return static_cast<u32>(m_numPhysicalCores);
     }
 
     u32 getNumHWThreads() const {
-        return m_numHWThreads;
+        return static_cast<u32>(m_numHWThreads);
     }
 
     u32 getNumHWThreadsForCore(ureg core) const {
         TURF_ASSERT(core < m_numPhysicalCores);
-        return util::countSetBits(m_physicalCoreMasks[core]);
+        return static_cast<u32>(util::countSetBits(m_physicalCoreMasks[core]));
     }
 
     bool setAffinity(ureg core, ureg hwThread);

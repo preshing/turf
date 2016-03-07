@@ -55,10 +55,13 @@ set(TURF_ALL_LIBRARY_DIRS "")
 
 # Optional: Locate Boost and append it to the list of include dirs/libraries.
 if(TURF_WITH_BOOST)
-    find_package(Boost REQUIRED)
+    add_definitions(-DBOOST_ALL_NO_LIB)
+    find_package(Boost REQUIRED system chrono thread atomic)
     list(APPEND TURF_ALL_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
     list(APPEND TURF_ALL_LIBRARIES ${Boost_LIBRARIES})
     list(APPEND TURF_ALL_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
+    
+    MESSAGE( STATUS "Boost_LIBRARIES: " ${Boost_LIBRARIES} )
 endif()
 
 # If this is the root listfile, add all samples
