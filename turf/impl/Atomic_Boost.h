@@ -32,9 +32,11 @@ inline void threadFenceSeqCst() { boost::atomic_thread_fence(boost::memory_order
 
 enum MemoryOrder {
     Relaxed = boost::memory_order_relaxed,
+    Consume = boost::memory_order_acquire,
     Acquire = boost::memory_order_acquire,
     Release = boost::memory_order_release,
-    AcqRel = boost::memory_order_acq_rel,
+    ConsumeRelease = boost::memory_order_acq_rel,
+    AcquireRelease = boost::memory_order_acq_rel,
 };
 
 template <typename T>

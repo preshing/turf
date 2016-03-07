@@ -31,7 +31,7 @@ public:
     }
 
     bool tryLock() {
-        return boost::mutex::tryLock();
+        return boost::mutex::try_lock();
     }
 
     void unlock() {
@@ -43,7 +43,7 @@ public:
 template <>
 class LockGuard<Mutex_Boost> : public boost::mutex::scoped_lock {
 public:
-    LockGuard_Boost(Mutex_Boost& mutex) : boost::mutex::scoped_lock(mutex) {
+    LockGuard(Mutex_Boost& mutex) : boost::mutex::scoped_lock(mutex) {
     }
 };
 
