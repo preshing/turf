@@ -29,7 +29,7 @@
         #define TURF_IMPL_TLS_PTR_PATH "impl/TLSPtr_POSIX.h"
         #define TURF_IMPL_TLS_PTR_TYPE turf::TLSPtr_POSIX
     #else
-        #define TURF_IMPL_TLS_PTR_PATH "*** Unable to select a default Thread implementation ***"
+        #define TURF_IMPL_TLS_PTR_PATH "*** Unable to select a default TLSPtr implementation ***"
     #endif
 #endif
 
