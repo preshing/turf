@@ -66,7 +66,7 @@ public: // MUTATORS
     void setData(T* value) {
         void* oldValue = pthread_getspecific(m_tlsKey);
         delete reinterpret_cast<T*>(oldValue);
-        result = pthread_setspecific(m_tlsKey, value);
+        int result = pthread_setspecific(m_tlsKey, value);
         TURF_ASSERT(result == 0);
     }
 };
