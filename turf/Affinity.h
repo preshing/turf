@@ -25,6 +25,9 @@
     #elif TURF_KERNEL_LINUX
         #define TURF_IMPL_AFFINITY_PATH "impl/Affinity_Linux.h"
         #define TURF_IMPL_AFFINITY_TYPE turf::Affinity_Linux
+    #elif TURF_KERNEL_FREEBSD
+        #define TURF_IMPL_AFFINITY_PATH "impl/Affinity_FreeBSD.h"
+        #define TURF_IMPL_AFFINITY_TYPE turf::Affinity_FreeBSD
     #elif TURF_KERNEL_MACH
         #define TURF_IMPL_AFFINITY_PATH "impl/Affinity_Mach.h"
         #define TURF_IMPL_AFFINITY_TYPE turf::Affinity_Mach
