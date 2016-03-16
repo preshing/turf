@@ -15,6 +15,8 @@ See the LICENSE file for more information.
 #include <turf/TID.h>
 #include <turf/TLSPtr.h>
 
+#include <stdlib.h>
+
 using namespace turf::intTypes;
 
 //---------------------------------------------------------
