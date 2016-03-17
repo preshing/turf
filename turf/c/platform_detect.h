@@ -46,6 +46,10 @@
     #if defined(__APPLE__)
         #define TURF_TARGET_POSIX 1
     #endif
+    #if defined(__FreeBSD__)
+        #define TURF_TARGET_POSIX 1
+        #define TURF_KERNEL_FREEBSD 1
+    #endif
     #if defined(__linux__)
         #define TURF_TARGET_POSIX 1
         #define TURF_KERNEL_LINUX 1

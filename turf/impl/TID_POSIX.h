@@ -21,6 +21,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <pthread.h>
+#ifdef TURF_KERNEL_FREEBSD
+#include <pthread_np.h>
+#endif
 
 namespace turf {
 
@@ -35,7 +38,11 @@ public:
     static TID getCurrentThreadID() {
         // FIXME: On Linux, would the kernel task ID be more useful for debugging?
         // If so, detect NPTL at compile time and create TID_NPTL.h which uses gettid() instead.
+#ifdef TURF_KERNEL_FREEBSD
+		return pthread_getthreadid_np();
+#else
         return pthread_self();
+#endif
     }
 
     static PID getCurrentProcessID() {
