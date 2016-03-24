@@ -14,6 +14,7 @@
 #define TURF_EXTRA_JOBDISPATCHER_H
 
 #include <turf/Core.h>
+#include <turf/Assert.h>
 #include <turf/Affinity.h>
 #include <turf/extra/SpinKicker.h>
 #include <vector>
