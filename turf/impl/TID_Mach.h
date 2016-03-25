@@ -17,6 +17,7 @@
 #include <turf/Util.h>
 #include <pthread.h>
 #include <mach/mach_types.h>
+#include <unistd.h>
 
 namespace turf {
 
