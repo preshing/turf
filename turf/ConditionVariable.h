@@ -14,6 +14,7 @@
 #define TURF_CONDITIONVARIABLE_H
 
 #include <turf/Core.h>
+#include <turf/Mutex.h>
 
 // clang-format off
 
