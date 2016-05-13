@@ -44,6 +44,7 @@
         #define TURF_HAS_STDINT 1
     #endif
     #if defined(__APPLE__)
+        #define TURF_TARGET_APPLE 1
         #define TURF_TARGET_POSIX 1
     #endif
     #if defined(__FreeBSD__)

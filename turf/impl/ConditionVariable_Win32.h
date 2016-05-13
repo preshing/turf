@@ -31,6 +31,11 @@ public:
         SleepConditionVariableCS(&m_condVar, &guard.getMutex().m_mutex, INFINITE);
     }
 
+    void timedWait(LockGuard<Mutex_Win32>& guard, ureg waitMillis) {
+        if (waitMillis > 0)
+            SleepConditionVariableCS(&m_condVar, &guard.getMutex().m_mutex, waitMillis);
+    }
+
     void wakeOne() {
         WakeConditionVariable(&m_condVar);
     }

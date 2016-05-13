@@ -28,6 +28,11 @@ public:
         m_condVar.wait(guard);
     }
 
+    void timedWait(turf::LockGuard<Mutex_CPP11>& guard, ureg waitMillis) {
+        if (waitMillis > 0)
+            m_condVar.wait_for(guard, std::chrono::milliseconds(waitMillis));
+    }
+
     void wakeOne() {
         m_condVar.notify_one();
     }

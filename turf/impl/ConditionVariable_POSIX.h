@@ -15,6 +15,7 @@
 
 #include <turf/Core.h>
 #include <turf/impl/Mutex_POSIX.h>
+#include <time.h>
 
 namespace turf {
 
@@ -33,8 +34,22 @@ public:
         pthread_cond_destroy(&m_condVar);
     }
 
-    void wait(turf::LockGuard<Mutex_POSIX>& guard) {
+    void wait(LockGuard<Mutex_POSIX>& guard) {
         pthread_cond_wait(&m_condVar, &guard.getMutex().m_mutex);
+    }
+
+    void timedWait(LockGuard<Mutex_Win32>& guard, ureg waitMillis) {
+        if (waitMillis > 0) {
+            struct timespec ts;
+            clock_gettime(CLOCK_REALTIME, &ts);
+            ts.tv_sec += waitMillis / 1000;
+            ts.tv_nsec += (waitMillis % 1000) * 1000000;
+            if (ts.tv_nsec >= 1000000000) {
+                ts.tv_nsec -= 1000000000;
+                ts.tv_sec++;
+            }
+            pthread_cond_timedwait(&m_condVar, &guard.getMutex().m_mutex, &ts);
+        }
     }
 
     void wakeOne() {
