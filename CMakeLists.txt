@@ -95,7 +95,11 @@ include_directories(${TURF_ALL_INCLUDE_DIRS})
 
 # Make installable.
 if(TURF_MAKE_INSTALLABLE)
-  install(TARGETS turf DESTINATION ${LIB_INSTALL_DIR})
+    # Allow -DLIB_INSTALL_DIR=<path> to be passed on the command line
+    if(NOT DEFINED LIB_INSTALL_DIR)
+        set(LIB_INSTALL_DIR lib)
+    endif()
+    install(TARGETS turf DESTINATION ${LIB_INSTALL_DIR})
     install(DIRECTORY turf/ DESTINATION include/turf FILES_MATCHING PATTERN "*.h" PATTERN "*.inc")
     file(GLOB configHeaders "${CMAKE_CURRENT_BINARY_DIR}/include/*.h")
     install(FILES ${configHeaders} DESTINATION include)
