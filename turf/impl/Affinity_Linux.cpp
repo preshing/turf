@@ -15,7 +15,6 @@
 #if TURF_KERNEL_LINUX
 
 #include <turf/impl/Affinity_Linux.h>
-#include <map>
 #include <string>
 #include <fstream>
 #include <stdio.h>
@@ -23,51 +22,6 @@
 namespace turf {
 
 Affinity_Linux::Affinity_Linux() : m_isAccurate(false), m_numHWThreads(0) {
-    struct CoreInfoCollector {
-        struct CoreID {
-            s32 physical;
-            s32 core;
-            CoreID() : physical(-1), core(-1) {
-            }
-            bool operator<(const CoreID& other) const {
-                if (physical != other.physical)
-                    return physical < other.physical;
-                return core < other.core;
-            }
-        };
-
-        s32 logicalProcessor;
-        CoreID coreID;
-        std::map<CoreID, u32> coreIDToIndex;
-
-        CoreInfoCollector() : logicalProcessor(-1) {
-        }
-
-        void flush(Affinity_Linux& affinity) {
-            if (logicalProcessor >= 0) {
-                if (coreID.physical < 0 && coreID.core < 0) {
-                    // On PowerPC Linux 3.2.0-4, /proc/cpuinfo outputs "processor", but not "physical id" or "core id".
-                    // Emulate a single physical CPU with N cores:
-                    coreID.physical = 0;
-                    coreID.core = logicalProcessor;
-                }
-                std::map<CoreID, u32>::iterator iter = coreIDToIndex.find(coreID);
-                u32 coreIndex;
-                if (iter == coreIDToIndex.end()) {
-                    coreIndex = (u32) affinity.m_coreIndexToInfo.size();
-                    affinity.m_coreIndexToInfo.resize(coreIndex + 1);
-                    coreIDToIndex[coreID] = coreIndex;
-                } else {
-                    coreIndex = iter->second;
-                }
-                affinity.m_coreIndexToInfo[coreIndex].hwThreadIndexToLogicalProcessor.push_back(logicalProcessor);
-                affinity.m_numHWThreads++;
-            }
-            logicalProcessor = -1;
-            coreID = CoreID();
-        }
-    };
-
     std::ifstream f("/proc/cpuinfo");
     if (f.is_open()) {
         CoreInfoCollector collector;

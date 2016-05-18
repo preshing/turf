@@ -40,10 +40,10 @@ void Options::parse(int argc, const char** argv) {
         m_programName = programName + 1;
 
     // Make option tables
-    typedef std::unordered_map<std::string, const Option*> LongDict;
+    typedef std::map<std::string, const Option*> LongDict;
     LongDict longDict;
     longDict[m_helpOption.longName] = &m_helpOption;
-    typedef std::unordered_map<char, const Option*> ShortDict;
+    typedef std::map<char, const Option*> ShortDict;
     ShortDict shortDict;
     shortDict[m_helpOption.shortName] = &m_helpOption;
     for (ureg i = 0; i < m_numOptions; i++) {

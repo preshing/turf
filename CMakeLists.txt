@@ -15,6 +15,7 @@ endif()
 # Default values.
 # These can be overridden by user, or set to the cache by a parent.
 set(TURF_USERCONFIG "" CACHE STRING "Optional path to additional config file (relative to root CMakeLists.txt)")
+set(TURF_ENABLE_CPP11 TRUE CACHE BOOL "Enable C++11 compiler support")
 set(TURF_PREFER_CPP11 FALSE CACHE BOOL "Prefer C++11 atomics, threads, etc. over native implementations")
 set(TURF_WITH_BOOST FALSE CACHE BOOL "Use Boost")
 if(TURF_WITH_BOOST)

@@ -15,7 +15,7 @@
 
 #include <turf/Core.h>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <string>
 
 namespace turf {
@@ -36,7 +36,7 @@ private:
     Option m_helpOption;
     ureg m_numOptions;
     std::vector<const char*> m_positionalArgs;
-    typedef std::unordered_map<std::string, const char*> KeywordArgs;
+    typedef std::map<std::string, const char*> KeywordArgs;
     KeywordArgs m_keywordArgs;
 
 public:
