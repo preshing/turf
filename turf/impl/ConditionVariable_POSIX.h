@@ -38,8 +38,14 @@ public:
         pthread_cond_wait(&m_condVar, &guard.getMutex().m_mutex);
     }
 
-    void timedWait(LockGuard<Mutex_Win32>& guard, ureg waitMillis) {
+    void timedWait(LockGuard<Mutex_POSIX>& guard, ureg waitMillis) {
         if (waitMillis > 0) {
+#if TURF_TARGET_APPLE
+            struct timespec ts;
+            ts.tv_sec += waitMillis / 1000;
+            ts.tv_nsec += (waitMillis % 1000) * 1000000;
+            pthread_cond_timedwait_relative_np(&m_condVar, &guard.getMutex().m_mutex, &ts);
+#else
             struct timespec ts;
             clock_gettime(CLOCK_REALTIME, &ts);
             ts.tv_sec += waitMillis / 1000;
@@ -49,6 +55,7 @@ public:
                 ts.tv_sec++;
             }
             pthread_cond_timedwait(&m_condVar, &guard.getMutex().m_mutex, &ts);
+#endif
         }
     }
 
