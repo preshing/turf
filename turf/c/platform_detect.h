@@ -46,6 +46,10 @@
     #if defined(__APPLE__)
         #define TURF_TARGET_APPLE 1
         #define TURF_TARGET_POSIX 1
+        #include <TargetConditionals.h>
+        #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+            #define TURF_TARGET_IOS 1
+        #endif
     #endif
     #if defined(__FreeBSD__)
         #define TURF_TARGET_POSIX 1
