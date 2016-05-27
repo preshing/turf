@@ -57,7 +57,11 @@ using namespace intTypes;
 // C++ macros
 //---------------------------------------------------
 #define TURF_CALL_MEMBER(obj, pmf) ((obj).*(pmf))
+#if TURF_HAS_STATIC_ASSERT
+#define TURF_STATIC_ASSERT(x) static_assert(x, #x)
+#else
 #define TURF_STATIC_ASSERT(x) typedef char TURF_UNIQUE_VARIABLE(StaticAssert)[(x) ? 1 : -1]
+#endif
 
 #if TURF_HAS_NOEXCEPT
 #define TURF_NOEXCEPT noexcept

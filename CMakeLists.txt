@@ -47,6 +47,8 @@ SimpleCompileCheck(TURF_HAS_OVERRIDE "Checking for override keyword"
      struct Derived : Base { virtual void foo() override {} };")
 SimpleCompileCheck(TURF_HAS_LONG_LONG "Checking for long long"
     "long long foo;")
+SimpleCompileCheck(TURF_HAS_STATIC_ASSERT "Checking for static_assert"
+    "static_assert(true);")
 
 # Initialize variables used to collect include dirs/libraries.
 set(TURF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/include")
