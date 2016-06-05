@@ -81,4 +81,11 @@ using namespace intTypes;
 #define TURF_OVERRIDE
 #endif
 
+#if TURF_HAS_MOVE
+#include <utility>
+#define TURF_MOVE(x) std::move(x)
+#else
+#define TURF_MOVE(x) (x)
+#endif
+
 #endif // TURF_CORE_H

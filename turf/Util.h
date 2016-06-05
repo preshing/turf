@@ -128,6 +128,13 @@ T max(T a, T b) {
     return a > b ? a : b;
 }
 
+template <class T>
+void swap(T& a, T& b) {
+    T t = TURF_MOVE(a);
+    a = TURF_MOVE(b);
+    b = TURF_MOVE(t);
+}
+
 // from code.google.com/p/smhasher/wiki/MurmurHash3
 inline u32 avalanche(u32 h) {
     h ^= h >> 16;

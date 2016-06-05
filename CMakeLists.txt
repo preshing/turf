@@ -49,6 +49,9 @@ SimpleCompileCheck(TURF_HAS_LONG_LONG "Checking for long long"
     "long long foo;")
 SimpleCompileCheck(TURF_HAS_STATIC_ASSERT "Checking for static_assert"
     "static_assert(true);")
+SimpleCompileCheck(TURF_HAS_MOVE "Checking for std::move"
+    "#include <utility>
+     void foo(int& a, int& b) { a = std::move(b); }")
 
 # Initialize variables used to collect include dirs/libraries.
 set(TURF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/include")
