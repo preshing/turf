@@ -74,14 +74,13 @@
     #elif defined(__arm__)
         // ARM
         #define TURF_CPU_ARM 1
+        #define TURF_PTR_SIZE 4
         #if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
             // ARMv7
             #define TURF_CPU_ARM_VERSION 7
-            #define TURF_PTR_SIZE 4
         #elif defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6T2__) || defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__)
             // ARMv6
             #define TURF_CPU_ARM_VERSION 6
-            #define TURF_PTR_SIZE 4
         #else
             // Could support earlier ARM versions at some point using compiler barriers and swp instruction
             #error "Unrecognized ARM CPU architecture version!"
@@ -89,6 +88,16 @@
         #if defined(__thumb__)
             // Thumb instruction set mode
             #define TURF_CPU_ARM_THUMB 1
+        #endif
+    #elif defined(__arm64__)
+        // ARM64
+        #define TURF_CPU_ARM64 1
+        #define TURF_PTR_SIZE 8
+        #if defined(__ARM64_ARCH_8__)
+            // ARMv8
+            #define TURF_CPU_ARM_VERSION 8
+        #else
+            #error "Unrecognized ARM64 CPU architecture version!"
         #endif
     #elif defined(__powerpc__) || defined(__POWERPC__) || defined(__PPC__)
         #define TURF_CPU_POWERPC 1
