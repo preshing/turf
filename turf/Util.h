@@ -74,6 +74,10 @@ struct BestFit<T*> {
 
 // clang-format on
 
+inline ureg align(ureg v, ureg a) {
+    return (v + a - 1) & ~(a - 1);
+}
+
 inline u32 roundUpPowerOf2(u32 v) {
     v--;
     v |= v >> 1;
