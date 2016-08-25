@@ -25,7 +25,7 @@
     #if TURF_TARGET_WIN32
         #define TURF_IMPL_TID_PATH "impl/TID_Win32.h"
         #define TURF_IMPL_TID_TYPE turf::TID_Win32
-    #elif   TURF_KERNEL_MACH
+    #elif TURF_KERNEL_MACH
         #define TURF_IMPL_TID_PATH "impl/TID_Mach.h"
         #define TURF_IMPL_TID_TYPE turf::TID_Mach
     #elif TURF_TARGET_POSIX
