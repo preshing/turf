@@ -32,7 +32,11 @@ public:
     // This only works when pthread_t is an integer type, as it is in the GNU C Library >= 2.3.3.
     // If that's not true for your Pthreads library, we'll need to extend Turf to fetch TIDs
     // from somewehere else in the environment.
+#ifdef TURF_TARGET_MINGW
+    typedef uptr TID;
+#else
     typedef util::BestFit<pthread_t>::Unsigned TID;
+#endif
     typedef util::BestFit<pid_t>::Unsigned PID;
 
     static TID getCurrentThreadID() {
@@ -40,6 +44,8 @@ public:
         // If so, detect NPTL at compile time and create TID_NPTL.h which uses gettid() instead.
 #ifdef TURF_KERNEL_FREEBSD
 		return pthread_getthreadid_np();
+#elif TURF_TARGET_MINGW
+        return (TID) pthread_self().p;
 #else
         return pthread_self();
 #endif

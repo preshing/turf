@@ -38,6 +38,7 @@ public:
         pthread_cond_wait(&m_condVar, &guard.getMutex().m_mutex);
     }
 
+#if !TURF_TARGET_MINGW
     void timedWait(LockGuard<Mutex_POSIX>& guard, ureg waitMillis) {
         if (waitMillis > 0) {
 #if TURF_TARGET_APPLE
@@ -58,6 +59,7 @@ public:
 #endif
         }
     }
+#endif
 
     void wakeOne() {
         pthread_cond_signal(&m_condVar);

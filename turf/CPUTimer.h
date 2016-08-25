@@ -23,7 +23,7 @@
         #define TURF_IMPL_CPUTIMER_PATH "impl/CPUTimer_CPP11.h"
         #define TURF_IMPL_CPUTIMER_TYPE turf::CPUTimer_CPP11
         // FIXME: Add CPUTimer_Boost
-    #elif TURF_TARGET_WIN32
+    #elif TURF_TARGET_WIN32 || TURF_TARGET_MINGW
         #define TURF_IMPL_CPUTIMER_PATH "impl/CPUTimer_Win32.h"
         #define TURF_IMPL_CPUTIMER_TYPE turf::CPUTimer_Win32
     #elif TURF_KERNEL_MACH

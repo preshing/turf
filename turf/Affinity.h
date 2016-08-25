@@ -31,6 +31,10 @@
     #elif TURF_KERNEL_MACH
         #define TURF_IMPL_AFFINITY_PATH "impl/Affinity_Mach.h"
         #define TURF_IMPL_AFFINITY_TYPE turf::Affinity_Mach
+    #elif TURF_TARGET_MINGW
+        // FIXME: Is there an API to detect CPU topology on MinGW?
+        #define TURF_IMPL_AFFINITY_PATH "impl/Affinity_Null.h"
+        #define TURF_IMPL_AFFINITY_TYPE turf::Affinity_Null
     #else
         #define TURF_IMPL_AFFINITY_PATH "*** Unable to select a default Affinity implementation ***"
     #endif

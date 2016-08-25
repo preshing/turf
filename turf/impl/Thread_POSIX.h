@@ -60,12 +60,14 @@ public:
         m_attached = false;
     }
 
+#if !TURF_TARGET_MINGW
     static void sleepMillis(ureg millis) {
         timespec ts;
         ts.tv_sec = millis / 1000;
         ts.tv_nsec = (millis % 1000) * 1000000;
         nanosleep(&ts, NULL);
     }
+#endif
 };
 
 } // namespace turf

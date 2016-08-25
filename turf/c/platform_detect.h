@@ -15,7 +15,7 @@
 
 // clang-format off
 
-#if defined(_WIN32)
+#if defined(_MSC_VER)
     // Win32 API
     #define TURF_COMPILER_MSVC 1
     #define TURF_TARGET_WIN32 1
@@ -62,6 +62,11 @@
     #if defined(__MACH__)
         // Mach kernel, eg. Apple MacOS/iOS
         #define TURF_KERNEL_MACH 1
+    #endif
+    #if defined(__MINGW32__) || defined(__MINGW64__)
+        // Leave TURF_TARGET_WIN32 undefined because too much API is missing from MinGW's Win32 implementation
+        #define TURF_TARGET_MINGW 1
+        #define TURF_TARGET_POSIX 1
     #endif
     #if defined(__x86_64__)
         // x64

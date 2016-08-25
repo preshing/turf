@@ -44,7 +44,7 @@ struct CPUTimer_GCC {
 			    asm volatile("rdtscp" : "=a"(tickl), "=d"(tickh) :: "memory", "%rcx");
 			    return Point(((uint64_t) tickh << 32) | tickl);
 			#else
-			    turf_instructionFence();
+			    //turf_instructionFence();  // FIXME: Insert a CPUID instruction here for more stable measurements
 			    uint32_t tickl, tickh;
 			    asm volatile("rdtsc" : "=a"(tickl), "=d"(tickh) :: "memory");
 			    return Point(((uint64_t) tickh << 32) | tickl);
