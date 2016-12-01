@@ -112,7 +112,7 @@ endif()
 
 # Export include dirs/libraries to parent project if we were invoked using add_subdirectory().
 if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-    set(turf_FOUND YES)
+    set(turf_FOUND YES PARENT_SCOPE)
     set(turf_INCLUDE_DIRS "${turf_INCLUDE_DIRS}" PARENT_SCOPE)
     set(turf_LIBS "${turf_LIBS}" PARENT_SCOPE)
     set(turf_LIBRARY_DIRS "${turf_LIBRARY_DIRS}" PARENT_SCOPE)
