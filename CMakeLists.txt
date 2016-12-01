@@ -54,18 +54,17 @@ SimpleCompileCheck(TURF_HAS_MOVE "Checking for std::move"
      void foo(int& a, int& b) { a = std::move(b); }")
 
 # Initialize variables used to collect include dirs/libraries.
-set(TURF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/include")
-set(TURF_ALL_INCLUDE_DIRS ${TURF_INCLUDE_DIRS})
-set(TURF_ALL_LIBRARIES turf)
-set(TURF_ALL_LIBRARY_DIRS "")
+set(turf_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/include")
+set(turf_LIBS turf)
+set(turf_LIBRARY_DIRS "")
 
 # Optional: Locate Boost and append it to the list of include dirs/libraries.
 if(TURF_WITH_BOOST)
     add_definitions(-DBOOST_ALL_NO_LIB)
     find_package(Boost REQUIRED system chrono thread atomic)
-    list(APPEND TURF_ALL_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
-    list(APPEND TURF_ALL_LIBRARIES ${Boost_LIBRARIES})
-    list(APPEND TURF_ALL_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
+    list(APPEND turf_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    list(APPEND turf_LIBS ${Boost_LIBRARIES})
+    list(APPEND turf_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
     
     MESSAGE( STATUS "Boost_LIBRARIES: " ${Boost_LIBRARIES} )
 endif()
@@ -97,7 +96,7 @@ endif()
 add_library(turf ${TURF_FILES})
 
 # Set include dirs for this library (done last).
-include_directories(${TURF_ALL_INCLUDE_DIRS})
+include_directories(${turf_INCLUDE_DIRS})
 
 # Make installable.
 if(TURF_MAKE_INSTALLABLE)
@@ -113,8 +112,8 @@ endif()
 
 # Export include dirs/libraries to parent project if we were invoked using add_subdirectory().
 if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-    set(TURF_INCLUDE_DIRS "${TURF_INCLUDE_DIRS}" PARENT_SCOPE)
-    set(TURF_ALL_INCLUDE_DIRS "${TURF_ALL_INCLUDE_DIRS}" PARENT_SCOPE)
-    set(TURF_ALL_LIBRARIES "${TURF_ALL_LIBRARIES}" PARENT_SCOPE)
-    set(TURF_ALL_LIBRARY_DIRS "${TURF_ALL_LIBRARY_DIRS}" PARENT_SCOPE)
+    set(turf_FOUND YES)
+    set(turf_INCLUDE_DIRS "${turf_INCLUDE_DIRS}" PARENT_SCOPE)
+    set(turf_LIBS "${turf_LIBS}" PARENT_SCOPE)
+    set(turf_LIBRARY_DIRS "${turf_LIBRARY_DIRS}" PARENT_SCOPE)
 endif()
