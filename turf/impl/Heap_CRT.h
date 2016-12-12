@@ -14,7 +14,7 @@
 #define TURF_IMPL_HEAP_CRT_H
 
 #include <turf/Core.h>
-#include <stdlib.h>
+#include <malloc.h>
 
 namespace turf {
 
@@ -32,6 +32,14 @@ public:
 
         void free(void* ptr) {
             ::free(ptr);
+        }
+
+        void* allocAligned(ureg size, ureg alignment) {
+            return ::_aligned_malloc((size_t) size, (size_t) alignment);
+        }
+
+        void freeAligned(void* ptr) {
+            ::_aligned_free(ptr);
         }
     };
 

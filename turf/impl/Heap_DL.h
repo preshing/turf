@@ -145,11 +145,6 @@ public:
             return memory_dl::dlmalloc((size_t) size, &m_mem.m_mstate);
         }
 
-        void* allocAligned(ureg size, ureg alignment) {
-            LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
-            return memory_dl::dlmemalign((size_t) alignment, (size_t) size, &m_mem.m_mstate);
-        }
-
         void* realloc(void* ptr, ureg newSize) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlrealloc(ptr, (size_t) newSize, &m_mem.m_mstate);
@@ -158,6 +153,15 @@ public:
         void free(void* ptr) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlfree(ptr, &m_mem.m_mstate);
+        }
+
+        void* allocAligned(ureg size, ureg alignment) {
+            LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
+            return memory_dl::dlmemalign((size_t) alignment, (size_t) size, &m_mem.m_mstate);
+        }
+
+        void freeAligned(void* ptr) {
+            free(ptr);
         }
 
         Stats getStats() {
