@@ -14,7 +14,12 @@
 #define TURF_IMPL_HEAP_CRT_H
 
 #include <turf/Core.h>
+#include <turf/Assert.h>
+#if TURF_TARGET_WIN32
 #include <malloc.h>
+#else
+#include <stdlib.h>
+#endif // TURF_TARGET_WIN32
 
 namespace turf {
 
@@ -35,11 +40,23 @@ public:
         }
 
         void* allocAligned(ureg size, ureg alignment) {
+#if TURF_TARGET_WIN32
             return ::_aligned_malloc((size_t) size, (size_t) alignment);
+#else
+            void* ptr;
+            int rc = posix_memalign(&ptr, (size_t) alignment, (size_t) size);
+            TURF_ASSERT(rc == 0);
+            TURF_UNUSED(rc);
+            return ptr;
+#endif // TURF_TARGET_WIN32
         }
 
         void freeAligned(void* ptr) {
+#if TURF_TARGET_WIN32
             ::_aligned_free(ptr);
+#else
+            ::free(ptr);
+#endif // TURF_TARGET_WIN32
         }
     };
 
