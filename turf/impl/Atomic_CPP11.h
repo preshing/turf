@@ -52,6 +52,10 @@ public:
     }
     Atomic_CPP11(const Atomic_CPP11& other) : std::atomic<T>(other.loadNonatomic()) {
     }
+    Atomic_CPP11& operator=(const Atomic_CPP11& other) {
+        storeNonatomic(other.loadNonatomic());
+        return *this;
+    }
     T loadNonatomic() const {
         return std::atomic<T>::load(std::memory_order_relaxed);
     }
