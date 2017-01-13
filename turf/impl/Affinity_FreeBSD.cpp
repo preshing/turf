@@ -71,7 +71,7 @@ static bool cpuid(pcpu_regs_t regs)
         u32 pre_change, post_change;
         const u32 id_flag = 0x200000;
         asm ("pushfl\n\t"          /* Save %eflags to restore later.  */
-             "pushfl\n\t"          /* Push second copy, for manipulation.  *
+             "pushfl\n\t"          /* Push second copy, for manipulation.  */
              "popl %1\n\t"         /* Pop it into post_change.  */
              "movl %1,%0\n\t"      /* Save copy in pre_change.   */
              "xorl %2,%1\n\t"      /* Tweak bit in post_change.  */
