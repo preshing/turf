@@ -18,9 +18,10 @@
 // clang-format off
 
 #if TURF_WITH_ASSERTS
+    // Use TURF_FORCE_CRASH() since TURF_DEBUG_BREAK() is silently ignored when stepping through Visual Studio:
     #define TURF_ASSERT(cond) do { \
         if (!(cond)) \
-            TURF_DEBUG_BREAK(); \
+            TURF_FORCE_CRASH(); \
     } while (0)
 #else
     #define TURF_ASSERT(cond) do {} while (0)

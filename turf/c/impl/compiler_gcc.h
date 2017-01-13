@@ -43,5 +43,6 @@ TURF_C_INLINE void turf_yieldHWThread() {
 }
 
 #define TURF_DEBUG_BREAK() __builtin_trap()
+#define TURF_FORCE_CRASH() do { *(int*) 0 = 0; } while (0)
 
 #endif // TURF_C_IMPL_COMPILER_GCC_H

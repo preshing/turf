@@ -41,6 +41,7 @@
 //  Debug break
 //-------------------------------------
 #define TURF_DEBUG_BREAK() __debugbreak()
+#define TURF_FORCE_CRASH() do { *(int*) 0 = 0; } while (0)
 
 TURF_C_INLINE void turf_yieldHWThread() {
     YieldProcessor();
