@@ -40,6 +40,10 @@ public:
             CloseHandle(m_handle);
     }
 
+    bool isValid() const {
+        return m_handle != INVALID_HANDLE_VALUE;
+    }
+
     void join() {
         TURF_ASSERT(m_handle != INVALID_HANDLE_VALUE);
         WaitForSingleObject(m_handle, INFINITE);

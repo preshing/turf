@@ -40,6 +40,10 @@ public:
             m_thread.detach();
     }
 
+    bool isValid() const {
+        return m_thread.joinable();
+    }
+
     void join() {
         m_thread.join();
     }

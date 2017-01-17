@@ -46,6 +46,10 @@ public:
             pthread_detach(m_handle);
     }
 
+    bool isValid() const {
+        return m_attached;
+    }
+
     void run(StartRoutine startRoutine, void* arg = NULL) {
         TURF_ASSERT(!m_attached);
         pthread_create(&m_handle, NULL, startRoutine, arg);
