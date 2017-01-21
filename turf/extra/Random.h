@@ -39,6 +39,9 @@ public:
     u8 next8() {
         return (u8) next64();
     }
+    float nextFloat() {
+        return next32() / 4294967295.f;
+    }
 };
 
 } // namespace extra
