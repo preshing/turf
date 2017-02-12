@@ -29,6 +29,7 @@ private:
 
 public:
     Random();
+    Random(u64 seed);       // Explicit seed
     u64 next64();
     u32 next32() {
         return (u32) next64();

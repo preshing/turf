@@ -34,6 +34,13 @@ Random::Random() {
         next64();
 }
 
+Random::Random(u64 seed) {
+    s[0] = util::avalanche(seed + 1);
+    s[1] = util::avalanche(s[0] + 1);
+    next64();
+    next64();
+}
+
 u64 Random::next64() {
     u64 s1 = s[0];
     const u64 s0 = s[1];
