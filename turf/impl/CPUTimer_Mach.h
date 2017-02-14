@@ -33,8 +33,17 @@ struct CPUTimer_Mach {
         bool operator<(Point b) const {
             return (Duration)(tick - b.tick) < 0; // Handles wrap-around
         }
+        bool operator>(Point b) const {
+            return (Duration)(tick - b.tick) > 0; // Handles wrap-around
+        }
+        bool operator<=(Point b) const {
+            return (Duration)(tick - b.tick) <= 0; // Handles wrap-around
+        }
         bool operator>=(Point b) const {
             return (Duration)(tick - b.tick) >= 0; // Handles wrap-around
+        }
+        bool operator==(Point b) const {
+            return tick == b.tick;
         }
     };
 
