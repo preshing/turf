@@ -14,6 +14,7 @@
 #define TURF_UTIL_H
 
 #include <turf/Core.h>
+#include <turf/Assert.h>
 
 namespace turf {
 namespace util {
@@ -74,7 +75,12 @@ struct BestFit<T*> {
 
 // clang-format on
 
-inline ureg align(ureg v, ureg a) {
+inline bool isPowerOf2(ureg v) {
+    return (v & (v - 1)) == 0;
+}
+
+inline ureg alignPowerOf2(ureg v, ureg a) {
+    TURF_ASSERT(isPowerOf2(a));
     return (v + a - 1) & ~(a - 1);
 }
 
@@ -107,10 +113,6 @@ inline u64 roundUpPowerOf2(u64 v) {
 
 inline s64 roundUpPowerOf2(s64 v) {
     return (s64) roundUpPowerOf2((u64) v);
-}
-
-inline bool isPowerOf2(ureg v) {
-    return (v & (v - 1)) == 0;
 }
 
 inline ureg countSetBits(u64 mask) {
