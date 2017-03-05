@@ -125,17 +125,17 @@ inline ureg countSetBits(u64 mask) {
 }
 
 template <class T>
-T min(T a, T b) {
+inline T min(T a, T b) {
     return a < b ? a : b;
 }
 
 template <class T>
-T max(T a, T b) {
+inline T max(T a, T b) {
     return a > b ? a : b;
 }
 
 template <class T>
-void swap(T& a, T& b) {
+inline void swap(T& a, T& b) {
     T t = TURF_MOVE(a);
     a = TURF_MOVE(b);
     b = TURF_MOVE(t);
