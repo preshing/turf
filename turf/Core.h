@@ -69,23 +69,10 @@ using namespace intTypes;
 #define TURF_NOEXCEPT
 #endif
 
-#if TURF_HAS_CONSTEXPR
-#define TURF_CONSTEXPR constexpr
-#else
-#define TURF_CONSTEXPR
-#endif
-
 #if TURF_HAS_OVERRIDE
 #define TURF_OVERRIDE override
 #else
 #define TURF_OVERRIDE
-#endif
-
-#if TURF_HAS_MOVE
-#include <utility>
-#define TURF_MOVE(x) std::move(x)
-#else
-#define TURF_MOVE(x) (x)
 #endif
 
 #endif // TURF_CORE_H
