@@ -38,6 +38,8 @@ endif()
 # Compile checks.
 SimpleCompileCheck(TURF_HAS_STDINT "Checking for <stdint.h>"
     "#include <stdint.h>")
+SimpleCompileCheck(TURF_HAS_TYPE_TRAITS "Checking for <type_traits>"
+    "#include <type_traits>")
 SimpleCompileCheck(TURF_HAS_NOEXCEPT "Checking for noexcept keyword"
     "void foo() noexcept {};")
 SimpleCompileCheck(TURF_HAS_CONSTEXPR "Checking for constexpr keyword"
@@ -48,10 +50,10 @@ SimpleCompileCheck(TURF_HAS_OVERRIDE "Checking for override keyword"
 SimpleCompileCheck(TURF_HAS_LONG_LONG "Checking for long long"
     "long long foo;")
 SimpleCompileCheck(TURF_HAS_STATIC_ASSERT "Checking for static_assert"
-    "static_assert(true);")
-SimpleCompileCheck(TURF_HAS_MOVE "Checking for std::move"
+    "static_assert(true, \"\"); ")
+SimpleCompileCheck(TURF_HAS_MOVE_SEMANTICS "Checking for std::move"
     "#include <utility>
-     void foo(int& a, int& b) { a = std::move(b); }")
+     void foo(int& a, int&& b) { a = std::move(b); }")
 
 # Initialize variables used to collect include dirs/libraries.
 set(turf_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/include")
