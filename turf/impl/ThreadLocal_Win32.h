@@ -16,9 +16,6 @@
 #include <turf/Core.h>
 #include <turf/Assert.h>
 
-#undef TURF_HAS_MOVE_SEMANTICS
-#define TURF_HAS_MOVE_SEMANTICS 1
-
 namespace turf {
 
 template<typename T>
