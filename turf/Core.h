@@ -18,6 +18,14 @@
 #include <turf/c/core.h>
 #include <new>  // For placement new
 
+#if TURF_HAS_TYPE_TRAITS
+#include <type_traits>
+#endif
+
+#if TURF_HAS_MOVE_SEMANTICS
+#include <utility>
+#endif
+
 namespace turf {
 
 //---------------------------------------------------

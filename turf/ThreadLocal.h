@@ -19,15 +19,14 @@
 
 // Choose default implementation if not already configured by turf_userconfig.h:
 #if !defined(TURF_IMPL_THREADLOCAL_PATH)
-    #if TURF_PREFER_BOOST
-        #define TURF_IMPL_THREADLOCAL_PATH "impl/ThreadLocal_Boost.h"
-        #define TURF_IMPL_THREADLOCAL_TYPE turf::ThreadLocal_Boost
-    #elif TURF_TARGET_WIN32
+    #if TURF_TARGET_WIN32
         #define TURF_IMPL_THREADLOCAL_PATH "impl/ThreadLocal_Win32.h"
         #define TURF_IMPL_THREADLOCAL_TYPE turf::ThreadLocal_Win32
+        #define TURF_IMPL_THREADLOCALSCOPE_TYPE turf::ThreadLocalScope_Win32
     #elif TURF_TARGET_POSIX
         #define TURF_IMPL_THREADLOCAL_PATH "impl/ThreadLocal_POSIX.h"
         #define TURF_IMPL_THREADLOCAL_TYPE turf::ThreadLocal_POSIX
+        #define TURF_IMPL_THREADLOCALSCOPE_TYPE turf::ThreadLocalScope_POSIX
     #else
         #define TURF_IMPL_THREADLOCAL_PATH "*** Unable to select a default ThreadLocal implementation ***"
     #endif
@@ -41,26 +40,12 @@ namespace turf {
 
 template<typename T>
 class ThreadLocal : public TURF_IMPL_THREADLOCAL_TYPE<T> {
-public:
-    void operator=(T value) {
-        set(value);
-    }
 };
 
 template<typename T>
-class ThreadLocalScope {
-private:
-    ThreadLocal<T>& m_ptr;
-    T m_oldValue;
-
+class ThreadLocalScope : public TURF_IMPL_THREADLOCALSCOPE_TYPE<T> {
 public:
-    ThreadLocalScope(ThreadLocal<T>& ptr, T value) : m_ptr(ptr) {
-        m_oldValue = m_ptr;
-        m_ptr = value;
-    }
-
-    ~ThreadLocalScope() {
-        m_ptr = m_oldValue;
+    ThreadLocalScope(ThreadLocal<T>& ptr, T value) : TURF_IMPL_THREADLOCALSCOPE_TYPE<T>(ptr, value) {
     }
 };
 
