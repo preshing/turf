@@ -24,6 +24,7 @@
 #include <turf/RWLock.h>
 #include <turf/Semaphore.h>
 #include <turf/Thread.h>
+#include <turf/ThreadLocal.h>
 #include <turf/TID.h>
 #include <turf/Util.h>
 
