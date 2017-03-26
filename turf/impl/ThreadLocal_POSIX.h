@@ -10,43 +10,44 @@
   See the LICENSE file for more information.
 ------------------------------------------------------------------------------*/
 
-#ifndef TURF_IMPL_THREADLOCAL_WIN32_H
-#define TURF_IMPL_THREADLOCAL_WIN32_H
+#ifndef TURF_IMPL_THREADLOCAL_POSIX_H
+#define TURF_IMPL_THREADLOCAL_POSIX_H
 
 #include <turf/Core.h>
 #include <turf/Assert.h>
+#include <pthread.h>
 
 namespace turf {
 
 template<typename T>
-class ThreadLocalScope_Win32;
+class ThreadLocalScope_POSIX;
 
 template<typename T>
-class ThreadLocal_Win32 {
+class ThreadLocal_POSIX {
 private:
     TURF_STATIC_ASSERT(sizeof(T) <= TURF_PTR_SIZE);
-    DWORD m_tlsIndex;
+    pthread_key_t m_tlsKey;
 
-    ThreadLocal_Win32(const ThreadLocal_Win32&) {
+    ThreadLocal_POSIX(const ThreadLocal_POSIX&) {
     }
 
 public:
-    typedef ThreadLocalScope_Win32<T> Scope;
+    typedef ThreadLocalScope_POSIX<T> Scope;
 
-    ThreadLocal_Win32() {
-        m_tlsIndex = TlsAlloc();
-        TURF_ASSERT(m_tlsIndex != TLS_OUT_OF_INDEXES);
+    ThreadLocal_POSIX() {
+        int rc = pthread_key_create(&m_tlsKey, NULL);
+        TURF_ASSERT(rc == 0);
+        TURF_UNUSED(rc);
     }
 
-    ~ThreadLocal_Win32() {
-        BOOL rc = TlsFree(m_tlsIndex);
-        TURF_ASSERT(rc != 0);
+    ~ThreadLocal_POSIX() {
+        int rc = pthread_key_delete(m_tlsKey);
+        TURF_ASSERT(rc == 0);
         TURF_UNUSED(rc);
     }
 
     T load() const {
-        LPVOID value = TlsGetValue(m_tlsIndex);
-        TURF_ASSERT(value != 0 || GetLastError() == ERROR_SUCCESS);
+        void* value = pthread_getspecific(m_tlsKey);
         return reinterpret_cast<T>(value);
     }
 
@@ -67,45 +68,45 @@ public:
 #endif // TURF_HAS_TYPE_TRAITS
 
     void operator=(T value) {
-        BOOL rc = TlsSetValue(m_tlsIndex, value);
-        TURF_ASSERT(rc != 0);
+        int rc = pthread_setspecific(m_tlsKey, value);
+        TURF_ASSERT(rc == 0);
         TURF_UNUSED(rc);
     }
 
-    void operator=(const ThreadLocal_Win32<T>& other) {
+    void operator=(const ThreadLocal_POSIX<T>& other) {
         *this = other.load();
     }
 
 #if TURF_HAS_MOVE_SEMANTICS
     // In C++11, you can write auto scope = myTLvar.setInScope(value);
-    ThreadLocalScope_Win32<T> setInScope(T value);
+    ThreadLocalScope_POSIX<T> setInScope(T value);
 #endif
 };
 
 template<typename T>
-class ThreadLocalScope_Win32 {
+class ThreadLocalScope_POSIX {
 private:
-    ThreadLocal_Win32<T>* m_var;
+    ThreadLocal_POSIX<T>* m_var;
     T m_oldValue;
 
-    ThreadLocalScope_Win32(const ThreadLocalScope_Win32&) {
+    ThreadLocalScope_POSIX(const ThreadLocalScope_POSIX&) {
     }
 
 public:
-    ThreadLocalScope_Win32(ThreadLocal_Win32<T>& ptr, T value) : m_var(&ptr) {
+    ThreadLocalScope_POSIX(ThreadLocal_POSIX<T>& ptr, T value) : m_var(&ptr) {
         m_oldValue = *m_var;
         *m_var = value;
     }
 
 #if TURF_HAS_MOVE_SEMANTICS
-    ThreadLocalScope_Win32(ThreadLocalScope_Win32&& other) {
+    ThreadLocalScope_POSIX(ThreadLocalScope_POSIX&& other) {
         m_var = other.m_var;
         m_oldValue = other.m_oldValue;
         other.m_var = nullptr;
     }
 #endif
 
-    ~ThreadLocalScope_Win32() {
+    ~ThreadLocalScope_POSIX() {
         if (m_var) {
             *m_var = m_oldValue;
         }
@@ -114,11 +115,11 @@ public:
 
 #if TURF_HAS_MOVE_SEMANTICS
 template<typename T>
-ThreadLocalScope_Win32<T> ThreadLocal_Win32<T>::setInScope(T value) {
-    return ThreadLocalScope_Win32<T>(*this, value);
+ThreadLocalScope_POSIX<T> ThreadLocal_POSIX<T>::setInScope(T value) {
+    return ThreadLocalScope_POSIX<T>(*this, value);
 }
 #endif
 
 } // namespace turf
 
-#endif // TURF_IMPL_THREADLOCAL_WIN32_H
+#endif // TURF_IMPL_THREADLOCAL_POSIX_H
