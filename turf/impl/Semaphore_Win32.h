@@ -35,7 +35,7 @@ public:
     }
 
     void signal(ureg count = 1) {
-        ReleaseSemaphore(m_sem, count, NULL);
+        ReleaseSemaphore(m_sem, (DWORD) count, NULL);
     }
 };
 
