@@ -78,6 +78,9 @@ endmacro()
 
 macro(ApplyTurfBuildSettings)
     if(MSVC)
+        set(TURF_WITH_EDIT_AND_CONTINUE OFF CACHE BOOL "Use Program Database for Edit & Continue")
+        set(TURF_WITH_SECURE_COMPILER FALSE CACHE BOOL "Enable compiler-generated security checks")
+
         set(fastLink)
         if(NOT MSVC_VERSION LESS 1900)
             set(fastLink ":FASTLINK")
@@ -118,6 +121,8 @@ macro(ApplyTurfBuildSettings)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GS- /D_CRT_SECURE_NO_WARNINGS=1")
         endif()
     else()
+        set(TURF_ENABLE_CPP11 TRUE CACHE BOOL "Enable C++11 compiler support")
+        
         set(CMAKE_C_FLAGS "-g -std=gnu99 -fno-stack-protector")
         if(DEFINED TURF_ENABLE_CPP11 AND NOT "${TURF_ENABLE_CPP11}")
             set(CMAKE_CXX_FLAGS "-g -fno-stack-protector")
