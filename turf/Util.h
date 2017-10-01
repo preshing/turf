@@ -84,6 +84,11 @@ inline ureg alignPowerOf2(ureg v, ureg a) {
     return (v + a - 1) & ~(a - 1);
 }
 
+inline bool isAlignedPowerOf2(ureg v, ureg a) {
+    TURF_ASSERT(isPowerOf2(a));
+    return (v & (a - 1)) == 0;
+}
+
 inline u32 roundUpPowerOf2(u32 v) {
     v--;
     v |= v >> 1;
