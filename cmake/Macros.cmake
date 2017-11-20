@@ -78,7 +78,7 @@ endmacro()
 
 macro(ApplyTurfBuildSettings)
     if(MSVC)
-        set(TURF_WITH_EDIT_AND_CONTINUE OFF CACHE BOOL "Use Program Database for Edit & Continue")
+        set(TURF_WITH_EDIT_AND_CONTINUE ON CACHE BOOL "Use Program Database for Edit & Continue")
         set(TURF_WITH_SECURE_COMPILER FALSE CACHE BOOL "Enable compiler-generated security checks")
 
         set(fastLink)
@@ -86,7 +86,8 @@ macro(ApplyTurfBuildSettings)
             set(fastLink ":FASTLINK")
         endif()
         set(CMAKE_EXE_LINKER_FLAGS "/ignore:4221")
-        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL /DEBUG${fastLink}")
+        # Some libraries can cause the linker to enable LTCG, so force it off. Especially important for Edit & Continue.
+        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL /DEBUG${fastLink} /LTCG:OFF")
         set(CMAKE_EXE_LINKER_FLAGS_RELWITHASSERTS "/INCREMENTAL:NO /DEBUG")
         set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/INCREMENTAL:NO /DEBUG")
         set(CMAKE_STATIC_LINKER_FLAGS "/ignore:4221")
