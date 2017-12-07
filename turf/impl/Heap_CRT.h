@@ -15,6 +15,7 @@
 
 #include <turf/Core.h>
 #include <turf/Assert.h>
+#include <turf/Util.h>
 #if TURF_TARGET_WIN32
 #include <malloc.h>
 #else
@@ -40,11 +41,12 @@ public:
         }
 
         void* allocAligned(ureg size, ureg alignment) {
+            TURF_ASSERT(util::isPowerOf2(alignment));
 #if TURF_TARGET_WIN32
             return ::_aligned_malloc((size_t) size, (size_t) alignment);
 #else
             void* ptr;
-            int rc = posix_memalign(&ptr, (size_t) alignment, (size_t) size);
+            int rc = posix_memalign(&ptr, util::max<size_t>(alignment, TURF_PTR_SIZE), (size_t) size);
             TURF_ASSERT(rc == 0);
             TURF_UNUSED(rc);
             return ptr;
