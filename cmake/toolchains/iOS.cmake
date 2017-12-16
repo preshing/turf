@@ -11,6 +11,9 @@ endif()
 # Setting CMAKE_OSX_SYSROOT seems to do almost everything:
 set(CMAKE_OSX_SYSROOT "${XCODE_SELECT}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk")
 
+# CMAKE_SYSTEM_FRAMEWORK_PATH is needed for find_library to find frameworks in the SDK:
+set(CMAKE_SYSTEM_FRAMEWORK_PATH "${CMAKE_OSX_SYSROOT}/System/Library/Frameworks")
+
 # CMAKE_MACOSX_BUNDLE is needed to avoid the error "target specifies product type 'com.apple.product-type.tool',
 # but there's no such product type for the 'iphoneos' platform" during CMake's compiler checks:
 set(CMAKE_MACOSX_BUNDLE YES)
