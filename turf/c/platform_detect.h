@@ -20,6 +20,7 @@
     #define TURF_COMPILER_MSVC 1
     #define TURF_TARGET_WIN32 1
     #define TURF_LONG_SIZE 4
+    #define TURF_IS_BIG_ENDIAN 0
     #ifndef TURF_HAS_STDINT
         #if _MSC_VER >= 1600
             #define TURF_HAS_STDINT 1
@@ -115,6 +116,11 @@
         #error "Unrecognized target CPU!"
     #endif
     #define TURF_LONG_SIZE TURF_PTR_SIZE
+    #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        #define TURF_IS_BIG_ENDIAN 1
+    #else
+        #define TURF_IS_BIG_ENDIAN 0
+    #endif
 
 #else
     #error "Unrecognized compiler!"
