@@ -40,6 +40,10 @@ namespace turf {
 
 template<typename T>
 class ThreadLocal : public TURF_IMPL_THREADLOCAL_TYPE<T> {
+public:
+    void operator=(T value) {
+        TURF_IMPL_THREADLOCAL_TYPE<T>::operator=(value);
+    }
 };
 
 template<typename T>

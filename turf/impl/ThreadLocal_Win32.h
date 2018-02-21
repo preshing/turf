@@ -72,10 +72,6 @@ public:
         TURF_UNUSED(rc);
     }
 
-    void operator=(const ThreadLocal_Win32<T>& other) {
-        *this = other.load();
-    }
-
 #if TURF_HAS_MOVE_SEMANTICS
     // In C++11, you can write auto scope = myTLvar.setInScope(value);
     ThreadLocalScope_Win32<T> setInScope(T value);
