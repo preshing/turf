@@ -30,7 +30,7 @@ private:
     AffinityMask m_physicalCoreMasks[MaxHWThreads];
 
 public:
-    Affinity_Win32();
+    TURF_DLL_ENTRY Affinity_Win32();
 
     bool isAccurate() const {
         return m_isAccurate;
@@ -49,7 +49,7 @@ public:
         return static_cast<u32>(util::countSetBits(m_physicalCoreMasks[core]));
     }
 
-    bool setAffinity(ureg core, ureg hwThread);
+    TURF_DLL_ENTRY bool setAffinity(ureg core, ureg hwThread);
 };
 
 } // namespace turf

@@ -118,4 +118,15 @@ typedef uintptr_t uintreg_t;
 #define TURF_SREGD TURF_SPTRD
 #define TURF_UREGX TURF_UPTRX
 
+//---------------------------------------------
+// TURF_DLL_ENTRY
+//---------------------------------------------
+#if TURF_DLL_IMPORTING
+    #define TURF_DLL_ENTRY TURF_DLL_IMPORT
+#elif TURF_DLL_EXPORTING
+    #define TURF_DLL_ENTRY TURF_DLL_EXPORT
+#else
+    #define TURF_DLL_ENTRY
+#endif
+
 #endif // TURF_C_CORE_H

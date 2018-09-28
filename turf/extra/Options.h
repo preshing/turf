@@ -28,6 +28,7 @@ struct Option {
     const char* description;
 };
 
+// Not bothering with TURF_DLL_ENTRY since this is usually used from main():
 class Options {
 private:
     const char* m_programName;

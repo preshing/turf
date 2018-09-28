@@ -30,10 +30,10 @@ private:
     u32 m_step;
 
 public:
-    static void initialize();
+    static void TURF_DLL_ENTRY initialize();
 
-    TimeWaster();
-    void wasteRandomCycles();
+    TURF_DLL_ENTRY TimeWaster();
+    void TURF_DLL_ENTRY wasteRandomCycles();
 };
 
 } // namespace extra

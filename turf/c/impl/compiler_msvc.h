@@ -47,4 +47,10 @@ TURF_C_INLINE void turf_yieldHWThread() {
     YieldProcessor();
 }
 
+//-------------------------------------
+//  DLL imports
+//-------------------------------------
+#define TURF_DLL_IMPORT __declspec(dllimport)
+#define TURF_DLL_EXPORT __declspec(dllexport)
+
 #endif // TURF_C_IMPL_COMPILER_MSVC_H

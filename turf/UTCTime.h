@@ -18,7 +18,7 @@
 namespace turf {
 
 // Number of microseconds since January 1, 1601 in Coordinated Universal Time.
-uint64_t getCurrentUTCTime();
+TURF_DLL_ENTRY uint64_t getCurrentUTCTime();
 
 } // namespace turf
 

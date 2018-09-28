@@ -58,11 +58,11 @@ private:
     turf::Atomic<Page*> m_tail;
     ureg m_numPages; // Protected by m_mutex
 
-    Event* allocateEventFromNewPage();
+    TURF_DLL_ENTRY Event* allocateEventFromNewPage();
 
 public:
-    Trace_MemLog();
-    ~Trace_MemLog();
+    TURF_DLL_ENTRY Trace_MemLog();
+    TURF_DLL_ENTRY ~Trace_MemLog();
 
     void log(const char* msg, uptr param1, uptr param2) {
         turf::signalFenceSeqCst(); // Compiler barrier
@@ -123,10 +123,10 @@ public:
         return Iterator(tail, tail->index.loadNonatomic());
     }
 
-    void dumpStats();
-    void dumpEntireLog(const char* path, ureg startPage = 0);
+    TURF_DLL_ENTRY void dumpStats();
+    TURF_DLL_ENTRY void dumpEntireLog(const char* path, ureg startPage = 0);
 
-    static Trace_MemLog Instance;
+    TURF_DLL_ENTRY static Trace_MemLog Instance;
 };
 
 } // namespace turf

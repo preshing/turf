@@ -30,7 +30,7 @@
 #include TURF_IMPL_HEAP_PATH
 
 // Alias it:
-extern TURF_IMPL_HEAP_TYPE TurfHeap;
+TURF_DLL_ENTRY extern TURF_IMPL_HEAP_TYPE TurfHeap;
 
 #define TURF_HEAP_DIRECT(heap) (heap).operate(__FILE__ "(" TURF_STRINGIFY(__LINE__) ")")
 #define TURF_HEAP TURF_HEAP_DIRECT(TurfHeap)

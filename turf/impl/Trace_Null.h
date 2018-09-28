@@ -21,7 +21,7 @@ struct Trace_Null {
     void dumpStats() {
     }
 
-    static Trace_Null Instance;
+    TURF_DLL_ENTRY static Trace_Null Instance;
 };
 
 } // namespace turf

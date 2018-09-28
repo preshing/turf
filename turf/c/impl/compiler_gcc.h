@@ -45,4 +45,10 @@ TURF_C_INLINE void turf_yieldHWThread() {
 #define TURF_DEBUG_BREAK() __builtin_trap()
 #define TURF_FORCE_CRASH() __builtin_trap()
 
+//-------------------------------------
+//  DLL imports
+//-------------------------------------
+#define TURF_DLL_IMPORT
+#define TURF_DLL_EXPORT
+
 #endif // TURF_C_IMPL_COMPILER_GCC_H
