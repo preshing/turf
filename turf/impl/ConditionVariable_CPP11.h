@@ -21,7 +21,7 @@ namespace turf {
 
 class ConditionVariable_CPP11 {
 private:
-    std::condition_variable m_condVar;
+    std::condition_variable_any m_condVar;
 
 public:
     void wait(turf::LockGuard<Mutex_CPP11>& guard) {
