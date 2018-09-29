@@ -11,6 +11,9 @@
 ------------------------------------------------------------------------*/
 
 #include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <turf/extra/Random.h>
 #include <turf/UTCTime.h>
 #include <turf/CPUTimer.h>
@@ -51,3 +54,5 @@ u64 Random::next64() {
 
 } // namespace extra
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING

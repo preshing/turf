@@ -11,6 +11,9 @@
 ------------------------------------------------------------------------*/
 
 #include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <turf/impl/Trace_Counters.h>
 #include <stdio.h>
 
@@ -49,3 +52,5 @@ void TraceGroup::dumpIfUsed() {
 }
 
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING

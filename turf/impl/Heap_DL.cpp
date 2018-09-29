@@ -15,7 +15,7 @@
 
 #include <turf/Core.h>
 
-#if TURF_USE_DLMALLOC
+#if TURF_USE_DLMALLOC && !TURF_DLL_IMPORTING
 
 #include <turf/impl/Heap_DL.h>
 #include <turf/MemPage.h>
@@ -3363,4 +3363,4 @@ size_t dlmalloc_usable_size(void* mem) {
 } // namespace memory_dl
 } // namespace turf
 
-#endif // TURF_USE_DLMALLOC
+#endif // TURF_USE_DLMALLOC && !TURF_DLL_IMPORTING

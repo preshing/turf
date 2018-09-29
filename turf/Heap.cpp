@@ -13,12 +13,16 @@
 #include <turf/Core.h>
 #include <turf/Heap.h>
 
+#if !TURF_DLL_IMPORTING
 TURF_IMPL_HEAP_TYPE TurfHeap;
+#endif // !TURF_DLL_IMPORTING
 
 //---------------------------------------------------------------------------
 // Override operators new/delete
 // C++ allows us to replace global operators new/delete with our own thanks to
 // weak linking.
+// Note: We need to statically link these global operators even when Turf is
+// imported across DLL boundaries (ie. even when TURF_DLL_IMPORTING=1).
 //---------------------------------------------------------------------------
 #if TURF_REPLACE_OPERATOR_NEW
 void* operator new(std::size_t size) {

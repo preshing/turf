@@ -10,6 +10,10 @@
   See the LICENSE file for more information.
 ------------------------------------------------------------------------*/
 
+#include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <memory>
 #include <turf/impl/Trace_MemLog.h>
 #include <stdio.h>
@@ -89,3 +93,5 @@ void Trace_MemLog::dumpEntireLog(const char* path, ureg startPage) {
 }
 
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING

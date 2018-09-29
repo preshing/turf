@@ -25,10 +25,10 @@ private:
     turf::Atomic<TraceGroup*> m_firstGroup;
 
 public:
-    void addGroup(TraceGroup* group);
-    void dumpStats();
+    TURF_DLL_ENTRY void addGroup(TraceGroup* group);
+    TURF_DLL_ENTRY void dumpStats();
 
-    static Trace_Counters Instance; // Zero-initialized
+    TURF_DLL_ENTRY static Trace_Counters Instance; // Zero-initialized
 };
 
 class TraceGroup {
@@ -50,8 +50,8 @@ public:
         : m_name(name), m_counters(counters), m_numCounters(numCounters), m_next(NULL) {
         Trace_Counters::Instance.addGroup(this);
     }
-    void dump();
-    void dumpIfUsed();
+    TURF_DLL_ENTRY void dump();
+    TURF_DLL_ENTRY void dumpIfUsed();
 };
 
 // clang-format off

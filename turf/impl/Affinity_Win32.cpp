@@ -12,7 +12,7 @@
 
 #include <turf/Core.h>
 
-#if TURF_TARGET_WIN32
+#if TURF_TARGET_WIN32 && !TURF_DLL_IMPORTING
 
 #include <turf/impl/Affinity_Win32.h>
 #include <turf/Heap.h>
@@ -81,4 +81,4 @@ bool Affinity_Win32::setAffinity(ureg core, ureg hwThread) {
 
 } // namespace turf
 
-#endif // TURF_TARGET_WIN32
+#endif // TURF_TARGET_WIN32 && !TURF_DLL_IMPORTING

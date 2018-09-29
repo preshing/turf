@@ -11,6 +11,9 @@
 ------------------------------------------------------------------------*/
 
 #include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <turf/extra/Options.h>
 #include <turf/Assert.h>
 #include <turf/Util.h>
@@ -159,3 +162,5 @@ void Options::printErrorAndExit(const char* format, ...) {
 
 } // namespace extra
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING

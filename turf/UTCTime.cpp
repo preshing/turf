@@ -11,6 +11,9 @@
 ------------------------------------------------------------------------*/
 
 #include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <turf/UTCTime.h>
 
 #if TURF_TARGET_WIN32
@@ -50,3 +53,5 @@ uint64_t getCurrentUTCTime() {
 } // namespace turf
 
 #endif
+
+#endif // !TURF_DLL_IMPORTING

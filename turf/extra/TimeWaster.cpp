@@ -11,6 +11,9 @@
 ------------------------------------------------------------------------*/
 
 #include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <turf/extra/TimeWaster.h>
 #include <turf/extra/Random.h>
 
@@ -43,3 +46,5 @@ void TimeWaster::wasteRandomCycles() {
 
 } // namespace extra
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING

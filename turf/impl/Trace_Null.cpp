@@ -10,6 +10,10 @@
   See the LICENSE file for more information.
 ------------------------------------------------------------------------*/
 
+#include <turf/Core.h>
+
+#if !TURF_DLL_IMPORTING
+
 #include <memory>
 #include <turf/impl/Trace_Null.h>
 
@@ -18,3 +22,5 @@ namespace turf {
 Trace_Null Trace_Null::Instance;
 
 } // namespace turf
+
+#endif // !TURF_DLL_IMPORTING
