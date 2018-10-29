@@ -19,11 +19,62 @@
 namespace turf {
 namespace util {
 
-template <typename T>
-struct BestFit;
 
 // clang-format off
 
+template <typename T>
+struct TruncateTraits;
+template <>
+struct TruncateTraits<s8> {
+    typedef sreg ArgType;
+    static constexpr ArgType Min = INT8_MIN;
+    static constexpr ArgType Max = INT8_MAX;
+};
+template <>
+struct TruncateTraits<u8> {
+    typedef ureg ArgType;
+    static constexpr ArgType Min = 0;
+    static constexpr ArgType Max = UINT8_MAX;
+};
+template <>
+struct TruncateTraits<s16> {
+    typedef sreg ArgType;
+    static constexpr ArgType Min = INT16_MIN;
+    static constexpr ArgType Max = INT16_MAX;
+};
+template <>
+struct TruncateTraits<u16> {
+    typedef ureg ArgType;
+    static constexpr ArgType Min = 0;
+    static constexpr ArgType Max = UINT16_MAX;
+};
+template <>
+struct TruncateTraits<s32> {
+    typedef sreg ArgType;
+    static constexpr ArgType Min = INT32_MIN;
+    static constexpr ArgType Max = INT32_MAX;
+};
+template <>
+struct TruncateTraits<u32> {
+    typedef ureg ArgType;
+    static constexpr ArgType Min = 0;
+    static constexpr ArgType Max = UINT32_MAX;
+};
+template <>
+struct TruncateTraits<s64> {
+    typedef s64 ArgType;
+    static constexpr ArgType Min = INT64_MIN;
+    static constexpr ArgType Max = INT64_MAX;
+};
+template <>
+struct TruncateTraits<u64> {
+    typedef u64 ArgType;
+    static constexpr ArgType Min = 0;
+    static constexpr ArgType Max = UINT64_MAX;
+};
+
+template <typename T>
+struct BestFit;
 template <>
 struct BestFit<s32> {
     typedef u32 Unsigned;
@@ -67,7 +118,7 @@ struct BestFit<u64> {
         typedef s64 Signed;
     };
 #endif
-template <class T>
+template <typename T>
 struct BestFit<T*> {
     typedef uptr Unsigned;
     typedef sptr Signed;
@@ -129,14 +180,20 @@ inline ureg countSetBits(u64 mask) {
     return count;
 }
 
-template <class T>
+template <typename T>
 inline T min(T a, T b) {
     return a < b ? a : b;
 }
 
-template <class T>
+template <typename T>
 inline T max(T a, T b) {
     return a > b ? a : b;
+}
+
+template <typename T>
+inline T truncateChecked(typename TruncateTraits<T>::ArgType src) {
+    TURF_ASSERT(src >= TruncateTraits<T>::Min && src <= TruncateTraits<T>::Max);
+    return (T) src;
 }
 
 // from code.google.com/p/smhasher/wiki/MurmurHash3
