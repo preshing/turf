@@ -27,50 +27,50 @@ struct TruncateTraits;
 template <>
 struct TruncateTraits<s8> {
     typedef sreg ArgType;
-    static constexpr ArgType Min = INT8_MIN;
-    static constexpr ArgType Max = INT8_MAX;
+    static const ArgType Min = INT8_MIN;
+    static const ArgType Max = INT8_MAX;
 };
 template <>
 struct TruncateTraits<u8> {
     typedef ureg ArgType;
-    static constexpr ArgType Min = 0;
-    static constexpr ArgType Max = UINT8_MAX;
+    static const ArgType Min = 0;
+    static const ArgType Max = UINT8_MAX;
 };
 template <>
 struct TruncateTraits<s16> {
     typedef sreg ArgType;
-    static constexpr ArgType Min = INT16_MIN;
-    static constexpr ArgType Max = INT16_MAX;
+    static const ArgType Min = INT16_MIN;
+    static const ArgType Max = INT16_MAX;
 };
 template <>
 struct TruncateTraits<u16> {
     typedef ureg ArgType;
-    static constexpr ArgType Min = 0;
-    static constexpr ArgType Max = UINT16_MAX;
+    static const ArgType Min = 0;
+    static const ArgType Max = UINT16_MAX;
 };
 template <>
 struct TruncateTraits<s32> {
     typedef sreg ArgType;
-    static constexpr ArgType Min = INT32_MIN;
-    static constexpr ArgType Max = INT32_MAX;
+    static const ArgType Min = INT32_MIN;
+    static const ArgType Max = INT32_MAX;
 };
 template <>
 struct TruncateTraits<u32> {
     typedef ureg ArgType;
-    static constexpr ArgType Min = 0;
-    static constexpr ArgType Max = UINT32_MAX;
+    static const ArgType Min = 0;
+    static const ArgType Max = UINT32_MAX;
 };
 template <>
 struct TruncateTraits<s64> {
     typedef s64 ArgType;
-    static constexpr ArgType Min = INT64_MIN;
-    static constexpr ArgType Max = INT64_MAX;
+    static const ArgType Min = INT64_MIN;
+    static const ArgType Max = INT64_MAX;
 };
 template <>
 struct TruncateTraits<u64> {
     typedef u64 ArgType;
-    static constexpr ArgType Min = 0;
-    static constexpr ArgType Max = UINT64_MAX;
+    static const ArgType Min = 0;
+    static const ArgType Max = UINT64_MAX;
 };
 
 template <typename T>

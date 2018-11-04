@@ -127,6 +127,9 @@ namespace memory_dl {
 #pragma warning( disable : 4146 ) /* no "unsigned" warnings */
 #endif /* _MSC_VER */
 
+#ifdef assert
+#undef assert
+#endif
 #define assert TURF_ASSERT
 
 /* Declarations for bit scanning on win32 */
