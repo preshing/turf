@@ -26,7 +26,7 @@ class Mutex_LazyInit {
 private:
     Atomic<bool> m_initFlag;
     Atomic<bool> m_spinLock;
-    u8 m_buffer[sizeof(Mutex)];
+    TURF_DECL_ALIGNED(u8 m_buffer[sizeof(Mutex)], alignof(Mutex));     // Note: alignof requires C++11
 
     Mutex& getMutex() {
         return *(Mutex*) m_buffer;
