@@ -140,22 +140,22 @@ public:
         }
 
         // There may also be extra indirection/checks inside the functions
-        void* alloc(ureg size) {
+        TURF_NO_INLINE void* alloc(ureg size) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlmalloc((size_t) size, &m_mem.m_mstate);
         }
 
-        void* realloc(void* ptr, ureg newSize) {
+        TURF_NO_INLINE void* realloc(void* ptr, ureg newSize) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlrealloc(ptr, (size_t) newSize, &m_mem.m_mstate);
         }
 
-        void free(void* ptr) {
+        TURF_NO_INLINE void free(void* ptr) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlfree(ptr, &m_mem.m_mstate);
         }
 
-        void* allocAligned(ureg size, ureg alignment) {
+        TURF_NO_INLINE void* allocAligned(ureg size, ureg alignment) {
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             return memory_dl::dlmemalign((size_t) alignment, (size_t) size, &m_mem.m_mstate);
         }
@@ -164,7 +164,7 @@ public:
             free(ptr);
         }
 
-        Stats getStats() {
+        TURF_NO_INLINE Stats getStats() {
             Stats stats;
             LockGuard<Mutex_LazyInit> guard(m_mem.m_mutex);
             memory_dl::dlmalloc_stats(&m_mem.m_mstate, stats);

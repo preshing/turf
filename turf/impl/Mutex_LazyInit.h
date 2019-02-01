@@ -32,7 +32,7 @@ private:
         return *(Mutex*) m_buffer;
     }
 
-    void lazyInit() {
+    TURF_NO_INLINE void lazyInit() {
         // We use the thread-safe DCLI pattern via spinlock in case threads are spawned
         // during static initialization of global C++ objects. In that case, any of them
         // could call lazyInit().
