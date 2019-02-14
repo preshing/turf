@@ -69,7 +69,11 @@ public:
         timespec ts;
         ts.tv_sec = millis / 1000;
         ts.tv_nsec = (millis % 1000) * 1000000;
-        nanosleep(&ts, NULL);
+        int rc;
+        do {
+            rc = nanosleep(&ts, NULL);
+            TURF_ASSERT(rc == 0 || (rc == -1 && errno == EINTR));
+        } while (rc == -1 && errno == EINTR);
     }
 #endif
 };
